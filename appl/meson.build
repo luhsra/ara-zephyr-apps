@@ -58,8 +58,10 @@ elif get_option('arch') == 'arm'
 endif
 
 zephyr_targets = []
-zephyr_root = join_paths(get_option('zephyr_dir'), 'zephyr')
+zephyr_root = join_paths(zephyrproject, 'zephyr')
 
+
+zephyr_apps_dict = {}
 
 # Add all available zephyr apps to zephyr_apps.
 # The build process looks like this:
@@ -81,8 +83,6 @@ zephyr_root = join_paths(get_option('zephyr_dir'), 'zephyr')
 # run_target(): Meson expects this to have no output.
 foreach app : zephyr_apps
     target = custom_target(app,
-        env: [python_path],
-        depends: ara_py,
         command: [py3_inst,
         join_paths(meson.current_source_dir(), 'compile_zephyr.py'),
         app,
@@ -100,8 +100,11 @@ foreach app : zephyr_apps
         '--llc=' + llc.full_path(),
         '--llvm_link=' + llvm_link.full_path()],
         output: app + '.ll',
-        build_always_stale: true)
+        build_always_stale: true,
+        build_by_default: true
+        )
     zephyr_targets += target
-    set_variable('zephyr_' + app, target)
+    #set_variable('zephyr_' + app, target)
+    zephyr_apps_dict += {app: target}
 endforeach
 
