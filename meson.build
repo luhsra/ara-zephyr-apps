@@ -26,7 +26,7 @@ endif
 files(toolchain_ready_signalizer)
 
 ## llvm dependencies
-llvm_version = ['>=14', '<16']
+llvm_version = ['>=14', '<15']
 llvm_dep = dependency('llvm', method: 'config-tool', version: llvm_version, include_type: 'system')
 
 llvm_bindir = llvm_dep.get_variable(configtool: 'bindir')
