@@ -45,6 +45,6 @@ t2_action() {
 K_THREAD_DEFINE(t1, 1024, t1_action, NULL, NULL, NULL, 1, 0, 0);
 k_thread t2;
 
-int main() {
+void main() {
 	k_thread_create(t2, t2_action, 2);
 }
