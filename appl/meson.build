@@ -160,7 +160,6 @@ foreach board : boards
         ]]
     )
     zephyr_targets += target
-    zephyr_apps_dict += {app: target}
   endforeach
 endforeach
 
