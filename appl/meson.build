@@ -75,6 +75,7 @@ if toolchains.get_variable('posix_enabled')
   boards += [{
     'name': 'native_posix',
     'apps': zephyr_apps,
+    'cflags': '',
   }]
 endif
 if toolchains.get_variable('arm_enabled')
@@ -82,6 +83,7 @@ if toolchains.get_variable('arm_enabled')
     boards += [{
       'name': 'nucleo_f303re',
       'apps': zephyr_apps + z_hw_apps,
+      'cflags': '-mfloat-abi=soft',
     }]
   endif
 
@@ -89,6 +91,7 @@ if toolchains.get_variable('arm_enabled')
     boards += [{
       'name': 'nucleo_f103rb',
       'apps': zephyr_apps + z_hw_apps,
+      'cflags': '-mfloat-abi=soft',
     }]
   endif
 endif
@@ -162,7 +165,7 @@ foreach board : boards
                           #cmake_call += ' -D CMAKE_EXE_LINKER_FLAGS="-fuse-ld=' + args.ld + ' -L ' + args.libgcc + '"' #+ ' -v"'
                           # Disable common warnings that gcc does not emit but clang does. Typedef redefinition will be fixed
                           # in https://github.com/zephyrproject-rtos/zephyr/pull/29359
-                          'EXTRA_CFLAGS="-Wno-typedef-redefinition -Wno-unused-command-line-argument"',
+                          'EXTRA_CFLAGS=-Wno-typedef-redefinition -Wno-unused-command-line-argument @0@'.format(board['cflags']),
                          # app,
                          # '--source_dir=' + meson.current_source_dir() / app,
                          # '--build_dir=' + meson.current_build_dir() / app,
