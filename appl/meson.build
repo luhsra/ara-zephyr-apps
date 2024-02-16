@@ -122,7 +122,6 @@ foreach board : boards
   apps = board['apps']
   foreach app : apps
     tgt_name = f'@board_name@-@app@'
-    message(tgt_name)
     target = custom_target(tgt_name,
       output: tgt_name + '.ll',
       depends: ara_link,
