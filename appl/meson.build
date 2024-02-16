@@ -78,6 +78,7 @@ if toolchains.get_variable('posix_enabled')
     'cflags': '',
   }]
 endif
+arm_boards = []
 if toolchains.get_variable('arm_enabled')
   if get_option('build_nucleo_f303re')
     boards += [{
@@ -85,6 +86,7 @@ if toolchains.get_variable('arm_enabled')
       'apps': zephyr_apps + z_hw_apps,
       'cflags': '-mfloat-abi=soft',
     }]
+    arm_boards += ['nucleo_f303re']
   endif
 
   if get_option('build_nucleo_f103rb')
@@ -93,19 +95,9 @@ if toolchains.get_variable('arm_enabled')
       'apps': zephyr_apps + z_hw_apps,
       'cflags': '-mfloat-abi=soft',
     }]
+    arm_boards += ['nucleo_f103rb']
   endif
 endif
-
-# if get_option('arch') == 'i386'
-#     l_gcc = ''
-#     board = 'native_posix'
-# elif get_option('arch') == 'arm'
-#     l_gcc = libgcc_dir
-#     # The f303re has a bigger flash which is needed for a few bigger samples.
-#     #board = 'nucleo_f103rb'
-#     board = 'nucleo_f303re'
-#     zephyr_apps += z_hw_apps
-# endif
 
 # Add all available zephyr apps to zephyr_apps.
 # The build process looks like this:
@@ -127,7 +119,6 @@ endif
 # run_target(): Meson expects this to have no output.
 
 zephyr_targets = []
-zephyr_apps_dict = {}
 foreach board : boards
   board_name = board['name']
   apps = board['apps']
@@ -159,31 +150,16 @@ foreach board : boards
                          'CMAKE_NM=' + llvm_nm.full_path(),
                          'CMAKE_AR=' + llvm_ar.full_path(),
                          #'KCONFIG_ROOT=' TODO
-                          ## Override the linker that clang uses for the exe/elf. Clang defaults to lld which is incompatible
-                          ## with the generated linker scripts. Note that setting CMAKE_LINKER will NOT work since clang
-                          ## ignores that.
-                          #cmake_call += ' -D CMAKE_EXE_LINKER_FLAGS="-fuse-ld=' + args.ld + ' -L ' + args.libgcc + '"' #+ ' -v"'
-                          # Disable common warnings that gcc does not emit but clang does. Typedef redefinition will be fixed
-                          # in https://github.com/zephyrproject-rtos/zephyr/pull/29359
-                          'EXTRA_CFLAGS=-Wno-typedef-redefinition -Wno-unused-command-line-argument @0@'.format(board['cflags']),
-                         # app,
-                         # '--source_dir=' + meson.current_source_dir() / app,
-                         # '--build_dir=' + meson.current_build_dir() / app,
-                         # '--zephyr_root=' + zephyr_root,
-                         # '--ld=' + llvm_ld.full_path(),
-                         # '--objcopy=' + llvm_objcopy.full_path(),
-                         # '--objdump=' + llvm_objdump.full_path(),
-                         # '--nm=' + llvm_nm.full_path(),
-                         # '--ar=' + llvm_ar.full_path(),
-                         # '--board=' + board_name,
-                         # # '--libgcc=' + l_gcc,
-                         # '--cc=' + clang.full_path(),
-                         # '--llc=' + llc.full_path(),
-                         # '--llvm_link=' + ara_link.full_path()],
+                         ## Override the linker that clang uses for the exe/elf. Clang defaults to lld which is incompatible
+                         ## with the generated linker scripts. Note that setting CMAKE_LINKER will NOT work since clang
+                         ## ignores that.
+                         #cmake_call += ' -D CMAKE_EXE_LINKER_FLAGS="-fuse-ld=' + args.ld + ' -L ' + args.libgcc + '"' #+ ' -v"'
+                         # Disable common warnings that gcc does not emit but clang does. Typedef redefinition will be fixed
+                         # in https://github.com/zephyrproject-rtos/zephyr/pull/29359
+                         'EXTRA_CFLAGS=-Wno-typedef-redefinition -Wno-unused-command-line-argument @0@'.format(board['cflags']),
         ]]
     )
     zephyr_targets += target
-    #set_variable('zephyr_' + app, target)
     zephyr_apps_dict += {app: target}
   endforeach
 endforeach
