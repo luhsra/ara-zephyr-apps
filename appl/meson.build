@@ -1,5 +1,5 @@
 # Apps that run on virtually any board since there are no hw dependencies
-z_easy_apps = [
+zephyr_apps = [
     'app_kernel',
     'cpp_sems',
     'duplicate_syscalls',
@@ -38,8 +38,6 @@ z_hw_apps = [
     'dyn_isr',
     'static_isr'
 ]
-
-zephyr_apps = z_easy_apps
 
 zephyr = subproject('zephyr-toolchain')
 zephyr_source_dir = zephyr.get_variable('zephyr_source_dir')
@@ -124,6 +122,7 @@ foreach board : boards
   apps = board['apps']
   foreach app : apps
     tgt_name = f'@board_name@-@app@'
+    message(tgt_name)
     target = custom_target(tgt_name,
       output: tgt_name + '.ll',
       depends: ara_link,
@@ -159,6 +158,7 @@ foreach board : boards
                          'EXTRA_CFLAGS=-Wno-typedef-redefinition -Wno-unused-command-line-argument @0@'.format(board['cflags']),
         ]]
     )
+    set_variable(tgt_name.underscorify(), target)
     zephyr_targets += target
   endforeach
 endforeach
