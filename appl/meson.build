@@ -123,7 +123,7 @@ foreach board : boards
   foreach app : apps
     tgt_name = f'@board_name@-@app@'
     target = custom_target(tgt_name,
-      output: tgt_name + '.ll',
+      output: [tgt_name + '.ll', tgt_name + '.config'],
       depends: ara_link,
       command: [
         py3_inst, files('compile_zephyr_app.py')[0],
@@ -133,7 +133,8 @@ foreach board : boards
         '--ninja-program', ninja.full_path(),
         '--zephyr-dir', zephyr_work_dir / 'zephyr',
         '--target', 'app/libapp.ll',
-        '--output', '@OUTPUT@',
+        '--output', '@OUTPUT0@',
+        '--kconfig', '@OUTPUT1@',
         '--cmake-args', ['BOARD=' + board_name,
                          'ZEPHYR_TOOLCHAIN_VARIANT=llvm',
                          'TOOLCHAIN_ROOT=' + zephyr_work_dir / 'zephyr',
@@ -157,7 +158,7 @@ foreach board : boards
                          'EXTRA_CFLAGS=-Wno-typedef-redefinition -Wno-unused-command-line-argument @0@'.format(board['cflags']),
         ]]
     )
-    set_variable(tgt_name.underscorify(), target)
+    set_variable(tgt_name.underscorify(), {'ll': target[0], 'config': target[1]})
     zephyr_targets += target
   endforeach
 endforeach

@@ -50,7 +50,11 @@ def main():
                         required=True,
                         type=pathlib.Path)
     parser.add_argument('--output',
-                        help='Bitcode output file.',
+                        help='LLVM IR output file.',
+                        required=True,
+                        type=pathlib.Path)
+    parser.add_argument('--kconfig',
+                        help='Generated config file.',
                         required=True,
                         type=pathlib.Path)
     parser.add_argument('--cmake-args',
@@ -81,8 +85,11 @@ def main():
 
     image = args.cmake_builddir / args.target
     assert image.is_file()
+    config = args.cmake_builddir / 'zephyr' / '.config'
+    assert image.is_file()
 
     shutil.copyfile(image, args.output.absolute())
+    shutil.copyfile(config, args.kconfig.absolute())
 
 
 if __name__ == '__main__':
