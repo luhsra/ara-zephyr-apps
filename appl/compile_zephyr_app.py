@@ -81,6 +81,10 @@ def main():
     run('Executing CMake', cmake_cmd, cwd=args.cmake_builddir, env=cmake_env)
 
     ninja_cmd = [args.ninja_program, args.target, '--verbose']
+    # build the executable (currently only POSIX supported)
+    if 'BOARD=native_posix' in args.cmake_args:
+        ninja_cmd = [args.ninja_program, '--verbose']
+
     run('Executing Ninja', ninja_cmd, cwd=args.cmake_builddir, env=cmake_env)
 
     image = args.cmake_builddir / args.target
