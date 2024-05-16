@@ -28,7 +28,7 @@
 #define MEMMAP_BENCH
 
 /* flag for performing the Memory Pool benchmark*/
-#define MEMPOOL_BENCH
+//#define MEMPOOL_BENCH
 
 /* flag for performing the Pipes benchmark */
 #define PIPE_BENCH
