@@ -24,6 +24,8 @@ void do_work(void* a, void* b, void* c) {
 }
 
 void main(void) {
+    k_thread_system_pool_assign(k_current_get());
+
     k_tid_t workerId = k_thread_create(&worker, worker_stack_area,
         STACKSIZE, do_work, NULL, NULL, NULL, PRIORITY, 0, K_FOREVER);
     

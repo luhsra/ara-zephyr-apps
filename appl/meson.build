@@ -1,7 +1,7 @@
 # Apps that run on virtually any board since there are no hw dependencies
 zephyr_apps = [
     'app_kernel',
-    #'cpp_sems', C++ currently not supported
+    'cpp_sems', # segfault on native_posix
     'duplicate_syscalls',
     'dyn_heap',
     'dyn_msgq',
