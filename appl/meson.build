@@ -74,15 +74,19 @@ if toolchains.get_variable('posix_enabled')
     'name': 'native_posix',
     'apps': zephyr_apps,
     'cflags': '',
+    'ldflags': '',
   }]
 endif
 arm_boards = []
 if toolchains.get_variable('arm_enabled')
+  cflags = '-mfloat-abi=soft'
+  ldflags = '-fuse-ld=@0@ -L @1@'.format(toolchains.get_variable('arm_ld').full_path(),toolchains.get_variable('arm_libgcc_dir'))
   if get_option('build_nucleo_f303re')
     boards += [{
       'name': 'nucleo_f303re',
       'apps': zephyr_apps + z_hw_apps,
-      'cflags': '-mfloat-abi=soft',
+      'cflags': cflags,
+      'ldflags': ldflags,
     }]
     arm_boards += ['nucleo_f303re']
   endif
@@ -91,7 +95,8 @@ if toolchains.get_variable('arm_enabled')
     boards += [{
       'name': 'nucleo_f103rb',
       'apps': zephyr_apps + z_hw_apps,
-      'cflags': '-mfloat-abi=soft',
+      'cflags': cflags,
+      'ldflags': ldflags,
     }]
     arm_boards += ['nucleo_f103rb']
   endif
@@ -149,13 +154,10 @@ foreach board : boards
                          'CMAKE_NM=' + llvm_nm.full_path(),
                          'CMAKE_AR=' + llvm_ar.full_path(),
                          #'KCONFIG_ROOT=' TODO
-                         ## Override the linker that clang uses for the exe/elf. Clang defaults to lld which is incompatible
-                         ## with the generated linker scripts. Note that setting CMAKE_LINKER will NOT work since clang
-                         ## ignores that.
-                         #cmake_call += ' -D CMAKE_EXE_LINKER_FLAGS="-fuse-ld=' + args.ld + ' -L ' + args.libgcc + '"' #+ ' -v"'
                          # Disable common warnings that gcc does not emit but clang does. Typedef redefinition will be fixed
                          # in https://github.com/zephyrproject-rtos/zephyr/pull/29359
                          'EXTRA_CFLAGS=-Wno-typedef-redefinition -Wno-unused-command-line-argument @0@'.format(board['cflags']),
+                         'CMAKE_EXE_LINKER_FLAGS=@0@'.format(board['ldflags']),
         ]]
     )
     set_variable(tgt_name.underscorify(), {'ll': target[0], 'config': target[1]})

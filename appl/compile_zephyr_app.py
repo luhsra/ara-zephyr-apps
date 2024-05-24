@@ -91,19 +91,18 @@ def main():
     shutil.copyfile(image, args.output.absolute())
     shutil.copyfile(config, args.kconfig.absolute())
 
-    # build the executable (currently only POSIX supported)
-    if 'BOARD=native_posix' in args.cmake_args:
-        with open(config) as fr:
-            lines = fr.readlines()
-        with open(config, 'w') as fw:
-            for line in lines:
-                # enable optimizations again to prevent segfault
-                if line.strip('\n') != 'CONFIG_NO_OPTIMIZATIONS=y':
-                    fw.write(line)
-        ninja_cmd = [args.ninja_program, '--verbose']
-        run('Executing Ninja', ninja_cmd, cwd=args.cmake_builddir, env=cmake_env)
-        # copy back previous config
-        shutil.copyfile(args.kconfig.absolute(), config)
+    # build the executable with optimizations
+    with open(config) as fr:
+        lines = fr.readlines()
+    with open(config, 'w') as fw:
+        for line in lines:
+            # enable optimizations again to prevent segfault
+            if line.strip('\n') != 'CONFIG_NO_OPTIMIZATIONS=y':
+                fw.write(line)
+    ninja_cmd = [args.ninja_program, '--verbose']
+    run('Executing Ninja', ninja_cmd, cwd=args.cmake_builddir, env=cmake_env)
+    # copy back previous config
+    shutil.copyfile(args.kconfig.absolute(), config)
 
 if __name__ == '__main__':
     main()
