@@ -23,7 +23,7 @@ void do_work(void* a, void* b, void* c) {
     }
 }
 
-void main(void) {
+int main(void) {
     k_thread_system_pool_assign(k_current_get());
 
     k_tid_t workerId = k_thread_create(&worker, worker_stack_area,
@@ -37,5 +37,6 @@ void main(void) {
         k_stack_push(&work, (stack_data_t)0);
         k_mutex_unlock(&guard);
     }
+    return 0;
 }
 

@@ -35,7 +35,7 @@ void produce_work_isr(const void* args) {
     k_mutex_unlock(&guard);
 }
 
-void main(void) {
+int main(void) {
     k_tid_t workerId = k_thread_create(&worker, worker_stack_area,
         STACKSIZE, do_work, NULL, NULL, NULL, PRIORITY, 0, K_FOREVER);
     
@@ -44,5 +44,6 @@ void main(void) {
 
     irq_connect_dynamic(WORK_IRQ, WORK_IRQ_PRIORITY, produce_work_isr, NULL, 0);
     irq_enable(WORK_IRQ);
+    return 0;
 }
 

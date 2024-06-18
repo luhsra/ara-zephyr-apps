@@ -62,6 +62,7 @@ void test_thread(void *arg1, void *arg2, void *arg3)
 
 K_THREAD_DEFINE(test_thread_id, STACK_SIZE, test_thread, NULL, NULL, NULL, K_PRIO_PREEMPT(10), 0, 0);
 
-void main(void)
+int main(void)
 {
+	return 0;
 }

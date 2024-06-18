@@ -74,13 +74,14 @@ void threadA(void *dummy1, void *dummy2, void *dummy3)
 K_THREAD_STACK_DEFINE(threadA_stack_area, STACKSIZE);
 struct k_thread threadA_data;
 
-void main(void)
+int main(void)
 { 
     k_tid_t tid = k_thread_create(&threadA_data, threadA_stack_area,
                     STACKSIZE, threadA, NULL, NULL, NULL,
                     PRIORITY, 0, K_NO_WAIT);
     
     k_thread_name_set(tid, "thread_a");
+    return 0;
 }
 
 

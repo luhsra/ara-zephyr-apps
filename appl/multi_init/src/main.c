@@ -16,8 +16,9 @@ void thread_a(void* a, void* b, void* c) {
 K_THREAD_DEFINE(threadA, STACKSIZE, thread_a, NULL, NULL, NULL, PRIORITY, 0, 0);
 
 
-void main(void) {
+int main(void) {
     k_sem_init(&sem0, 0, 1);
     k_sem_take(&sem0, K_FOREVER);
     k_sem_take(&sem1, K_FOREVER);
+    return 0;
 }

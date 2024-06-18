@@ -96,7 +96,7 @@ _app_ct_d char ctMSG[] = "CT!\n";
 
 
 
-void main(void)
+int main(void)
 {
 	struct k_mem_partition *dom1_parts[] = {&part2, &part1, &part3};
 	struct k_mem_partition *dom2_parts[] = {&part4, &part3};
@@ -161,6 +161,7 @@ void main(void)
 	k_thread_start(&ct_thread);
 	k_sem_give(&allforone);
 	printk("CT thread started\n");
+	return 0;
 }
 
 

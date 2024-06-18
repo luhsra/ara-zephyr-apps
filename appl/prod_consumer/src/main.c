@@ -47,7 +47,7 @@ K_QUEUE_DEFINE(shared_queue_outgoing);
 struct k_thread app_a_thread;
 K_THREAD_STACK_DEFINE(app_a_stack, APP_A_STACKSIZE);
 
-void main(void)
+int main(void)
 {
 	LOG_INF("APP A partition: %p %zu", (void *)app_a_partition.start,
 		(size_t)app_a_partition.size);
@@ -66,4 +66,5 @@ void main(void)
 
 	/* Re-use main for app B supervisor mode setup */
 	app_b_entry(NULL, NULL, NULL);
+	return 0;
 }

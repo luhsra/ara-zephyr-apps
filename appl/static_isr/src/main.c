@@ -41,7 +41,7 @@ void produce_more_work_isr(const void* args) {
     }
 }
 
-void main(void) {
+int main(void) {
     k_tid_t workerId = k_thread_create(&worker, worker_stack_area,
         STACKSIZE, do_work, NULL, NULL, NULL, PRIORITY, 0, K_FOREVER);
 
@@ -55,5 +55,6 @@ void main(void) {
     IRQ_DIRECT_CONNECT(WORK_IRQ + 1, WORK_IRQ_PRIORITY + 1, produce_more_work_isr, 0);
     irq_enable(WORK_IRQ);
     irq_enable(WORK_IRQ + 1);
+    return 0;
 }
 

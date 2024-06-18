@@ -26,7 +26,7 @@ K_THREAD_DEFINE(thread_a, STACKSIZE, do_stuff, 0xdeadbeef, NULL, NULL,
 
 void zephyr_dummy_syscall(){};
 
-void main() {
+int main() {
     zephyr_dummy_syscall();
     k_heap_init(&shared_heap, buf, sizeof(buf));
     while(true){
@@ -34,4 +34,5 @@ void main() {
         k_heap_alloc(&shared_heap, 0xaa, K_NO_WAIT);
         k_free(chunk);
     }
+    return 0;
 }

@@ -27,7 +27,7 @@ void do_work(void* a, void* b, void* c) {
     }
 }
 
-void main(void) {
+int main(void) {
     k_tid_t workerId = k_thread_create(&worker, worker_stack_area,
         STACKSIZE, do_work, NULL, NULL, NULL, PRIORITY, 0, K_FOREVER);
     
@@ -40,5 +40,6 @@ void main(void) {
         k_lifo_put(&work, &item);
         k_mutex_unlock(&guard);
     }
+    return 0;
 }
 

@@ -26,7 +26,7 @@ void do_stuff(void *dummy1, void *dummy2, void *dummy3)
 K_THREAD_DEFINE(thread_a, STACKSIZE, do_stuff, NULL, NULL, NULL,
 		PRIORITY, 0, 0);
 
-void main() {
+int main() {
     k_thread_system_pool_assign(k_current_get());
     k_pipe_alloc_init(&work, PIPE_SIZE);
     int item = 0;
@@ -34,4 +34,5 @@ void main() {
         size_t bytes_written;
         k_pipe_put(&work, &item, sizeof(int), &bytes_written, sizeof(int), K_FOREVER);
     }
+    return 0;
 }

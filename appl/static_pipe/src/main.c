@@ -28,7 +28,7 @@ K_THREAD_DEFINE(thread_a, STACKSIZE, do_stuff, NULL, NULL, NULL,
 
 void zephyr_dummy_syscall(){};
 
-void main() {
+int main() {
     zephyr_dummy_syscall();
 
     int item = 0;
@@ -36,4 +36,5 @@ void main() {
         size_t bytes_written;
         k_pipe_put(&work, &item, sizeof(int), &bytes_written, sizeof(int), K_FOREVER);
     }
+    return 0;
 }

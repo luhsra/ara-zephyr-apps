@@ -118,7 +118,7 @@ void output_close(void)
  *
  * @return N/A
  */
-void main(void)
+int main(void)
 {
 	int autorun = 0, continuously = 0;
 
@@ -152,6 +152,7 @@ void main(void)
 	k_thread_abort(RECVTASK);
 
 	output_close();
+	return 0;
 }
 
 

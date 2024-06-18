@@ -124,7 +124,7 @@ void output_close(void)
  *
  * @return N/A
  */
-void main(void)
+int main(void)
 {
 	int	    continuously = 0;
 	int	    test_result;
@@ -183,4 +183,5 @@ void main(void)
 	//} while (continuously);
 
 	output_close();
+	return 0;
 }

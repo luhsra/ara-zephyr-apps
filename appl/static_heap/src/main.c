@@ -28,7 +28,7 @@ void zephyr_dummy_syscall(){};
 void sleep_tight(struct k_thread* t, void* data){
 }
 
-void main() {
+int main() {
     zephyr_dummy_syscall();
 
     while(true){
@@ -36,4 +36,5 @@ void main() {
         k_heap_alloc(&shared_heap, 0xaa, K_NO_WAIT);
         k_free(chunk);
     }
+    return 0;
 }
