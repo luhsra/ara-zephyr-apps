@@ -9,10 +9,10 @@
 #ifndef SYSKERNEK_H
 #define SYSKERNEK_H
 
-#include <timestamp.h>
+#include <zephyr/timestamp.h>
 
 #include <stdio.h>
-#include <toolchain.h>
+#include <zephyr/toolchain.h>
 
 #define STACK_SIZE 2048
 #define NUMBER_OF_LOOPS 1000

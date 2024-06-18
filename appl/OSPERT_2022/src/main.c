@@ -1,5 +1,5 @@
 
-#include <zephyr.h>
+#include <zephyr/kernel.h>
 
 struct Message {
     void* reserved; // Reserved for queue management

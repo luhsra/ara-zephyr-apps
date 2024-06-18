@@ -1,5 +1,5 @@
 
-#include <zephyr.h>
+#include <zephyr/kernel.h>
 
 #define STACKSIZE 1024
 

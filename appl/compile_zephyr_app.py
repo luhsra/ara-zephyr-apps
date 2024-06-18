@@ -86,7 +86,7 @@ def main():
     image = args.cmake_builddir / args.target
     assert image.is_file()
     config = args.cmake_builddir / 'zephyr' / '.config'
-    assert image.is_file()
+    assert config.is_file()
 
     shutil.copyfile(image, args.output.absolute())
     shutil.copyfile(config, args.kconfig.absolute())

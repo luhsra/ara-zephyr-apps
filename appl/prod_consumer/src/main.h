@@ -7,9 +7,9 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#include <kernel.h>
+#include <zephyr/kernel.h>
 #include <app_memory/app_memdomain.h>
-#include <sys/mempool.h>
+#include <zephyr/sys/mempool.h>
 
 extern struct k_mem_partition shared_partition;
 #define SHARED_DATA	K_APP_DMEM(shared_partition)
