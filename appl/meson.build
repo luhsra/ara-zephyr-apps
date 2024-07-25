@@ -1,54 +1,53 @@
-# Apps that run on virtually any board since there are no hw dependencies
-zephyr_apps = [
-    'app_kernel',
-    #'cpp_sems', # c++ not supported
-    'duplicate_syscalls',
-    'dyn_heap',
-    'dyn_msgq',
-    'dyn_pipe',
-    'dyn_queue',
-    'dyn_stack',
-    'dyn_sys_sems',
-    'dyn_sems',
-    'latency_measure',
-    'minimal',
-    'multi_init',
-    'static_heap',
-    'static_msgq',
-    'static_pipe',
-    'static_queue',
-    'static_sems',
-    'static_stack',
-    'static_sys_sems',
-    'static_threads',
-    'sys_kernel',
-    'OSPERT_2022'
-]
-
-# Apps that require boards that support userspace applications
-z_userspace_apps = [
-    'prod_consumer',
-    'shared_mem'
-]
-
-# Apps that require hardware (gpio, interrupt controller) and therefore run on the nucleo_f103rb
-z_hw_apps = [
-    'blinky',
-    'button',
-    'dyn_isr',
-    'static_isr'
-]
-
+fs = import('fs')
 zephyr = subproject('zephyr-toolchain')
 zephyr_source_dir = zephyr.get_variable('zephyr_source_dir')
 zephyr_work_dir = zephyr.get_variable('zephyr_work_dir')
 zephyr_modules = ';'.join(zephyr.get_variable('modules'))
 
+# Apps that run on virtually any board since there are no hw dependencies
+zephyr_apps = [
+    zephyr_source_dir / 'samples' / 'basic' / 'minimal',
+    zephyr_source_dir / 'samples' / 'hello_world',
+    zephyr_source_dir / 'tests' / 'benchmarks' / 'sys_kernel',
+    # zephyr_source_dir / 'tests' / 'benchmarks' / 'app_kernel', # too big for nucleo
+    # zephyr_source_dir / 'samples' / 'cpp' / 'cpp_synchronization' # c++ not supported
+    # zephyr_source_dir / 'tests' / 'benchmarks' / 'latency_measure', # get_vfg_node pattern 3
+    meson.current_source_dir() / 'app_kernel',
+    meson.current_source_dir() / 'latency_measure',
+    meson.current_source_dir() / 'duplicate_syscalls',
+    meson.current_source_dir() / 'dyn_heap',
+    meson.current_source_dir() / 'dyn_msgq',
+    meson.current_source_dir() / 'dyn_pipe',
+    meson.current_source_dir() / 'dyn_queue',
+    meson.current_source_dir() / 'dyn_stack',
+    meson.current_source_dir() / 'dyn_sys_sems',
+    meson.current_source_dir() / 'dyn_sems',
+    meson.current_source_dir() / 'multi_init',
+    meson.current_source_dir() / 'static_heap',
+    meson.current_source_dir() / 'static_msgq',
+    meson.current_source_dir() / 'static_pipe',
+    meson.current_source_dir() / 'static_queue',
+    meson.current_source_dir() / 'static_sems',
+    meson.current_source_dir() / 'static_stack',
+    meson.current_source_dir() / 'static_sys_sems',
+    meson.current_source_dir() / 'static_threads',
+    meson.current_source_dir() / 'OSPERT_2022'
+]
 
-# Currently only three targets are supported:
-# Arm: The nucleo f103rb and nucleo_f303re
-# i386: native_posix
-# TODO: Find at least one arm board that supports user mode.
+# Apps that require boards that support userspace applications
+z_userspace_apps = [
+    zephyr_source_dir / 'samples' / 'userspace' / 'prod_consumer',
+    zephyr_source_dir / 'samples' / 'userspace' / 'shared_mem'
+]
+
+# Apps that require hardware (gpio, interrupt controller) and therefore run on the nucleo_f103rb
+z_hw_apps = [
+    zephyr_source_dir / 'samples' / 'basic' / 'blinky',
+    zephyr_source_dir / 'samples' / 'basic' / 'button',
+    meson.current_source_dir() / 'dyn_isr',
+    meson.current_source_dir() / 'static_isr'
+]
+
 toolchains = subproject('toolchains')
 
 llvm_ld = toolchains.get_variable('llvm_ld')
@@ -81,6 +80,7 @@ arm_boards = []
 if toolchains.get_variable('arm_enabled')
   cflags = '-mfloat-abi=soft'
   ldflags = '-fuse-ld=@0@ -L @1@'.format(toolchains.get_variable('arm_ld').full_path(),toolchains.get_variable('arm_libgcc_dir'))
+
   if get_option('build_nucleo_f303re')
     boards += [{
       'name': 'nucleo_f303re',
@@ -126,14 +126,15 @@ foreach board : boards
   board_name = board['name']
   apps = board['apps']
   foreach app : apps
-    tgt_name = f'@board_name@-@app@'
+    app_name = fs.name(app)
+    tgt_name = f'@board_name@-@app_name@'
     target = custom_target(tgt_name,
       output: [tgt_name + '.ll', tgt_name + '.config'],
       depends: ara_link,
       command: [
         py3_inst, files('compile_zephyr_app.py')[0],
         '--cmake-builddir', meson.current_build_dir() / tgt_name + '_build',
-        '--app-dir', meson.current_source_dir() / app,
+        '--app-dir', app,
         '--cmake-program', cmake_tool.full_path(),
         '--ninja-program', ninja.full_path(),
         '--zephyr-dir', zephyr_work_dir / 'zephyr',
@@ -160,7 +161,7 @@ foreach board : boards
                          'CMAKE_EXE_LINKER_FLAGS=@0@'.format(board['ldflags']),
         ]]
     )
-    set_variable(tgt_name.underscorify(), {'ll': target[0], 'config': target[1]})
+    #set_variable(tgt_name.underscorify(), {'ll': target[0], 'config': target[1]})
     zephyr_targets += target
   endforeach
 endforeach

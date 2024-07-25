@@ -77,7 +77,8 @@ def main():
     cmake_cmd = [
         args.cmake_program,
         '-S', str(args.app_dir.absolute()), '-GNinja'
-    ] + ['-D' + x for x in args.cmake_args]
+    ] + ['-D' + x for x in args.cmake_args] + [
+    '-DCONFIG_NO_OPTIMIZATIONS=y'] # ensure disabled optimization for IR building
     run('Executing CMake', cmake_cmd, cwd=args.cmake_builddir, env=cmake_env)
 
     ninja_cmd = [args.ninja_program, args.target, '--verbose']
