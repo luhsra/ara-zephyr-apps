@@ -70,7 +70,7 @@ dtc = find_program('dtc')
 boards = []
 if toolchains.get_variable('posix_enabled')
   boards += [{
-    'name': 'native_posix',
+    'name': 'native_sim',
     'apps': zephyr_apps,
     'cflags': '',
     'ldflags': '',
