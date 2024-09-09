@@ -66,6 +66,7 @@ ninja = find_program('ninja')
 # not directly used within Meson but needed by Zephyr
 dtc = find_program('dtc')
 
+compile_zephyr_app = files('compile_zephyr_app.py')[0]
 
 boards = []
 if toolchains.get_variable('posix_enabled')
@@ -132,7 +133,7 @@ foreach board : boards
       output: [tgt_name + '.ll', tgt_name + '.config'],
       depends: ara_link,
       command: [
-        py3_inst, files('compile_zephyr_app.py')[0],
+        py3_inst, compile_zephyr_app,
         '--cmake-builddir', meson.current_build_dir() / tgt_name + '_build',
         '--app-dir', app,
         '--cmake-program', cmake_tool.full_path(),
