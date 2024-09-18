@@ -9,11 +9,8 @@ zephyr_apps = [
     zephyr_source_dir / 'samples' / 'basic' / 'minimal',
     zephyr_source_dir / 'samples' / 'hello_world',
     zephyr_source_dir / 'tests' / 'benchmarks' / 'sys_kernel',
-    # zephyr_source_dir / 'tests' / 'benchmarks' / 'app_kernel', # too big for nucleo
-    # zephyr_source_dir / 'samples' / 'cpp' / 'cpp_synchronization' # c++ not supported
-    # zephyr_source_dir / 'tests' / 'benchmarks' / 'latency_measure', # get_vfg_node pattern 3
-    meson.current_source_dir() / 'app_kernel',
-    meson.current_source_dir() / 'latency_measure',
+    zephyr_source_dir / 'tests' / 'benchmarks' / 'app_kernel',
+    zephyr_source_dir / 'tests' / 'benchmarks' / 'latency_measure',
     meson.current_source_dir() / 'duplicate_syscalls',
     meson.current_source_dir() / 'dyn_heap',
     meson.current_source_dir() / 'dyn_msgq',
@@ -77,30 +74,13 @@ if toolchains.get_variable('posix_enabled')
     'ldflags': '',
   }]
 endif
-arm_boards = []
 if toolchains.get_variable('arm_enabled')
-  cflags = '-mfloat-abi=soft'
-  ldflags = '-fuse-ld=@0@ -L @1@'.format(toolchains.get_variable('arm_ld').full_path(),toolchains.get_variable('arm_libgcc_dir'))
-
-  if get_option('build_nucleo_f303re')
     boards += [{
-      'name': 'nucleo_f303re',
-      'apps': zephyr_apps + z_hw_apps,
-      'cflags': cflags,
-      'ldflags': ldflags,
-    }]
-    arm_boards += ['nucleo_f303re']
-  endif
-
-  if get_option('build_nucleo_f103rb')
-    boards += [{
-      'name': 'nucleo_f103rb',
-      'apps': zephyr_apps + z_hw_apps,
-      'cflags': cflags,
-      'ldflags': ldflags,
-    }]
-    arm_boards += ['nucleo_f103rb']
-  endif
+    'name': 'qemu_cortex_m3',
+    'apps': zephyr_apps,
+    'cflags': '-mcpu=cortex-m3 -mfloat-abi=soft',
+    'ldflags': '-fuse-ld=@0@ -L @1@'.format(toolchains.get_variable('arm_ld').full_path(),toolchains.get_variable('arm_libgcc_dir')),
+  }]
 endif
 
 # Add all available zephyr apps to zephyr_apps.

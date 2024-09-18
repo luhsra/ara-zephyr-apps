@@ -1,4 +1,0 @@
-option('build_nucleo_f303re', type: 'boolean', value: 'true',
-  description: 'Build apps for the Nucleo F303RE (only when an ARM toolchain is present')
-option('build_nucleo_f103rb', type: 'boolean', value: 'false',
-  description: 'Build apps for the Nucleo F303RB (only when an ARM toolchain is present')
