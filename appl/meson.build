@@ -19,6 +19,7 @@ zephyr_apps = [
     meson.current_source_dir() / 'dyn_stack',
     meson.current_source_dir() / 'dyn_sys_sems',
     meson.current_source_dir() / 'dyn_sems',
+    meson.current_source_dir() / 'dyn_isr',
     meson.current_source_dir() / 'multi_init',
     meson.current_source_dir() / 'static_heap',
     meson.current_source_dir() / 'static_msgq',
@@ -28,6 +29,7 @@ zephyr_apps = [
     meson.current_source_dir() / 'static_stack',
     meson.current_source_dir() / 'static_sys_sems',
     meson.current_source_dir() / 'static_threads',
+    meson.current_source_dir() / 'static_isr',
     meson.current_source_dir() / 'OSPERT_2022'
 ]
 
@@ -35,14 +37,6 @@ zephyr_apps = [
 z_userspace_apps = [
     zephyr_source_dir / 'samples' / 'userspace' / 'prod_consumer',
     zephyr_source_dir / 'samples' / 'userspace' / 'shared_mem'
-]
-
-# Apps that require hardware (gpio, interrupt controller) and therefore run on the nucleo_f103rb
-z_hw_apps = [
-    zephyr_source_dir / 'samples' / 'basic' / 'blinky',
-    zephyr_source_dir / 'samples' / 'basic' / 'button',
-    meson.current_source_dir() / 'dyn_isr',
-    meson.current_source_dir() / 'static_isr'
 ]
 
 toolchains = subproject('toolchains')
