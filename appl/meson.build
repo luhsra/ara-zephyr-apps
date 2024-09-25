@@ -97,6 +97,7 @@ endif
 # run_target(): Meson expects this to have no output.
 
 zephyr_targets = []
+zephyr_only_targets = []
 foreach board : boards
   board_name = board['name']
   apps = board['apps']
@@ -137,12 +138,13 @@ foreach board : boards
         ]]
     )
     #set_variable(tgt_name.underscorify(), {'ll': target[0], 'config': target[1]})
-    zephyr_targets += target
+    zephyr_targets += {'ll': target[0], 'config': target[1], 'cloc_app': [app]}
+    zephyr_only_targets += [target]
   endforeach
 endforeach
 
 nop = find_program('true')
 all_apps = 'build-zephyr-apps'
-run_target(all_apps, command: nop, depends: zephyr_targets)
+run_target(all_apps, command: nop, depends: zephyr_only_targets)
 summary('Build all ARA Zephyr apps', f'meson compile @all_apps@')
 
