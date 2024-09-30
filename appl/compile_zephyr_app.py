@@ -81,16 +81,25 @@ def main():
     '-DCONFIG_NO_OPTIMIZATIONS=y'] # ensure disabled optimization for IR building
     run('Executing CMake', cmake_cmd, cwd=args.cmake_builddir, env=cmake_env)
 
-    ninja_cmd = [args.ninja_program, args.target, '--verbose']
+    ninja_cmd = [args.ninja_program, args.target, 'kernel', 'zephyr.elf', '--verbose']
     run('Executing Ninja', ninja_cmd, cwd=args.cmake_builddir, env=cmake_env)
 
     image = args.cmake_builddir / args.target
     assert image.is_file()
     config = args.cmake_builddir / 'zephyr' / '.config'
     assert config.is_file()
+    kernel = args.cmake_builddir / 'zephyr' / 'zephyr.elf'
+    assert kernel.is_file()
+    linkermap = args.cmake_builddir / 'zephyr' / 'zephyr.map'
+    assert linkermap.is_file()
 
     shutil.copyfile(image, args.output.absolute())
     shutil.copyfile(config, args.kconfig.absolute())
+    
+    symlink = lambda src, dest: os.symlink(src, dest) if not os.path.exists(dest) else False
+    basename = os.path.splitext(args.output)[0]
+    symlink(kernel, basename + '-kernel.elf')
+    symlink(linkermap, basename + '-kernel.map')
 
     ## build the executable with optimizations
     #with open(config) as fr:

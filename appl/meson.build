@@ -84,6 +84,7 @@ gllvm = subproject('gllvm-meson')
 gclang = gllvm.get_variable('gclang')
 gclang_cpp = gllvm.get_variable('gclang_cpp')
 get_bc = gllvm.get_variable('get_bc')
+gllvm_env = {'LLVM_COMPILER_PATH': llvm_bindir}
 
 # Add all available zephyr apps to zephyr_apps.
 # The build process looks like this:
@@ -106,6 +107,7 @@ get_bc = gllvm.get_variable('get_bc')
 
 zephyr_targets = []
 zephyr_only_targets = []
+kernel_targets = []
 foreach board : boards
   board_name = board['name']
   apps = board['apps']
@@ -113,7 +115,7 @@ foreach board : boards
     app_name = fs.name(app)
     tgt_name = f'@board_name@-@app_name@'
     target = custom_target(tgt_name,
-      output: [tgt_name + '.ll', tgt_name + '.config'],
+      output: [tgt_name + '.ll', tgt_name + '.config', tgt_name + '-kernel.elf', tgt_name + '-kernel.map'],
       depends: ara_link,
       command: [
         py3_inst, compile_zephyr_app,
@@ -145,16 +147,33 @@ foreach board : boards
                          'EXTRA_CFLAGS=-Wno-typedef-redefinition -Wno-unused-command-line-argument @0@'.format(board['cflags']),
                          'CMAKE_EXE_LINKER_FLAGS=@0@'.format(board['ldflags']),
         ]],
-        env: {'LLVM_COMPILER_PATH': llvm_bindir}
+        env: gllvm_env,
     )
     #set_variable(tgt_name.underscorify(), {'ll': target[0], 'config': target[1]})
-    zephyr_targets += {'ll': target[0], 'config': target[1], 'cloc_app': [app]}
+    
+    kernel_bc = custom_target(
+      f'@tgt_name@-kernel.bc',
+      input: target,
+      output: f'@tgt_name@-kernel.bc',
+      command: [get_bc, '-o', '@OUTPUT@', '@INPUT2@'],
+      env: gllvm_env,
+    )
+
+    kernel_ll = custom_target(
+      f'@tgt_name@-kernel.ll',
+      input: kernel_bc,
+      output: f'@tgt_name@-kernel.ll',
+      command: [llvm_dis, '-o=@OUTPUT@', '@INPUT@'],
+    )
+    
+    zephyr_targets += {'ll': target[0], 'config': target[1], 'cloc_app': [app], 'kernel_ll': kernel_ll}
     zephyr_only_targets += [target]
+    kernel_targets += kernel_ll
   endforeach
 endforeach
 
 nop = find_program('true')
 all_apps = 'build-zephyr-apps'
-run_target(all_apps, command: nop, depends: zephyr_only_targets)
+run_target(all_apps, command: nop, depends: [zephyr_only_targets, kernel_targets])
 summary('Build all ARA Zephyr apps', f'meson compile @all_apps@')
 
