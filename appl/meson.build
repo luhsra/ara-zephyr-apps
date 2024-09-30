@@ -46,6 +46,9 @@ llvm_objcopy = toolchains.get_variable('llvm_objcopy')
 llvm_objdump = toolchains.get_variable('llvm_objdump')
 llvm_nm = toolchains.get_variable('llvm_nm')
 llvm_ar = toolchains.get_variable('llvm_ar')
+llvm_ranlib = toolchains.get_variable('llvm_ranlib')
+llvm_dis = toolchains.get_variable('llvm_dis')
+llvm_bindir = toolchains.get_variable('llvm_bindir')
 llc = toolchains.get_variable('llc')
 clang = toolchains.get_variable('clang')
 clangpp = toolchains.get_variable('clangpp')
@@ -76,6 +79,11 @@ if toolchains.get_variable('arm_enabled')
     'ldflags': '-fuse-ld=@0@ -L @1@'.format(toolchains.get_variable('arm_ld').full_path(),toolchains.get_variable('arm_libgcc_dir')),
   }]
 endif
+
+gllvm = subproject('gllvm-meson')
+gclang = gllvm.get_variable('gclang')
+gclang_cpp = gllvm.get_variable('gclang_cpp')
+get_bc = gllvm.get_variable('get_bc')
 
 # Add all available zephyr apps to zephyr_apps.
 # The build process looks like this:
@@ -122,20 +130,22 @@ foreach board : boards
                          'TOOLCHAIN_ROOT=' + zephyr_work_dir / 'zephyr',
                          'ZEPHYR_BASE=' + zephyr_work_dir / 'zephyr',
                          'ZEPHYR_MODULES=' + zephyr_modules,
-                         'CMAKE_C_COMPILER=' + clang.full_path(),
-                         'CMAKE_CXX_COMPILER=' + clangpp.full_path(),
+                         'CMAKE_C_COMPILER=' + gclang.full_path(),
+                         'CMAKE_CXX_COMPILER=' + gclang_cpp.full_path(),
                          'CMAKE_LLC=' + llc.full_path(),
                          'CMAKE_LLVM_LINK=' + ara_link.full_path(),
                          'CMAKE_OBJCOPY=' + llvm_objcopy.full_path(),
                          'CMAKE_OBJDUMP=' + llvm_objdump.full_path(),
                          'CMAKE_NM=' + llvm_nm.full_path(),
                          'CMAKE_AR=' + llvm_ar.full_path(),
+                         'CMAKE_RANLIB=' + llvm_ranlib.full_path(),
                          #'KCONFIG_ROOT=' TODO
                          # Disable common warnings that gcc does not emit but clang does. Typedef redefinition will be fixed
                          # in https://github.com/zephyrproject-rtos/zephyr/pull/29359
                          'EXTRA_CFLAGS=-Wno-typedef-redefinition -Wno-unused-command-line-argument @0@'.format(board['cflags']),
                          'CMAKE_EXE_LINKER_FLAGS=@0@'.format(board['ldflags']),
-        ]]
+        ]],
+        env: {'LLVM_COMPILER_PATH': llvm_bindir}
     )
     #set_variable(tgt_name.underscorify(), {'ll': target[0], 'config': target[1]})
     zephyr_targets += {'ll': target[0], 'config': target[1], 'cloc_app': [app]}
