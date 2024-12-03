@@ -13,6 +13,16 @@
 
 #define SLEEPTIME 500
 
+struct i2c_dev_inst {
+	struct k_mutex mutex;
+};
+
+static struct i2c_dev_inst i2c_inst[] = {
+	{},
+	{},
+};
+
+
 void helloLoop(const char *my_name,
 	       struct k_sem *my_sem, struct k_sem *other_sem)
 {
@@ -51,11 +61,20 @@ void threadB(void *dummy1, void *dummy2, void *dummy3)
 K_THREAD_STACK_DEFINE(threadB_stack_area, STACKSIZE);
 static struct k_thread threadB_data;
 
+int i2c_hub_config(uint8_t instance)
+{
+	k_mutex_init(&i2c_inst[instance].mutex);
+	return 0;
+}
+
 void threadA(void *dummy1, void *dummy2, void *dummy3)
 {
 	ARG_UNUSED(dummy1);
 	ARG_UNUSED(dummy2);
 	ARG_UNUSED(dummy3);
+	
+	// i2c_hub_config(0);
+	// i2c_hub_config(1);
 
 	k_tid_t tid = k_thread_create(&threadB_data, threadB_stack_area,
 			STACKSIZE, threadB, NULL, NULL, NULL,
@@ -70,6 +89,8 @@ K_THREAD_DEFINE(thread_a, STACKSIZE, threadA, NULL, NULL, NULL,
 		PRIORITY, 0, 0);
 
 int main() {
+
+	
     k_thread_join(thread_a, K_FOREVER);
     k_thread_join(&threadB_data, K_FOREVER);
 	return 0;

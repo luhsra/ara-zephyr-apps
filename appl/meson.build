@@ -23,14 +23,19 @@ zephyr_apps = [
     meson.current_source_dir() / 'multi_init',
     meson.current_source_dir() / 'static_heap',
     meson.current_source_dir() / 'static_msgq',
+    meson.current_source_dir() / 'static_msgq2',
+    meson.current_source_dir() / 'static_mutex',
     meson.current_source_dir() / 'static_pipe',
     meson.current_source_dir() / 'static_queue',
     meson.current_source_dir() / 'static_sems',
     meson.current_source_dir() / 'static_stack',
     meson.current_source_dir() / 'static_sys_sems',
     meson.current_source_dir() / 'static_threads',
+    meson.current_source_dir() / 'static_thread_join',
+    meson.current_source_dir() / 'static_timer',
     meson.current_source_dir() / 'static_isr',
-    meson.current_source_dir() / 'OSPERT_2022'
+    meson.current_source_dir() / 'OSPERT_2022',
+    meson.current_source_dir() / 'intel-ecfw-zephyr-dummy'
 ]
 
 # Apps that require boards that support userspace applications
@@ -84,7 +89,10 @@ gllvm = subproject('gllvm-meson')
 gclang = gllvm.get_variable('gclang')
 gclang_cpp = gllvm.get_variable('gclang_cpp')
 get_bc = gllvm.get_variable('get_bc')
-gllvm_env = {'LLVM_COMPILER_PATH': llvm_bindir}
+gllvm_env = {
+  'LLVM_COMPILER_PATH': llvm_bindir,
+  'CCACHE_DISABLE': '1',
+}
 
 # Add all available zephyr apps to zephyr_apps.
 # The build process looks like this:
