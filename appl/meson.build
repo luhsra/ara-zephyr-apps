@@ -91,6 +91,7 @@ gclang_cpp = gllvm.get_variable('gclang_cpp')
 get_bc = gllvm.get_variable('get_bc')
 gllvm_env = {
   'LLVM_COMPILER_PATH': llvm_bindir,
+  'GLLVM_OBJCOPY': toolchains.get_variable('llvm_objcopy').full_path(),
   'CCACHE_DISABLE': '1',
 }
 
