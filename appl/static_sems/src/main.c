@@ -13,14 +13,8 @@
 
 #define SLEEPTIME 500
 
-struct i2c_dev_inst {
-	struct k_mutex mutex;
-};
-
-static struct i2c_dev_inst i2c_inst[] = {
-	{},
-	{},
-};
+K_SEM_DEFINE(threadA_sem, 1, 1);
+K_SEM_DEFINE(threadB_sem, 0, 1);
 
 
 void helloLoop(const char *my_name,
@@ -29,7 +23,7 @@ void helloLoop(const char *my_name,
 	const char *tname;
 
 	while (1) {
-		k_sem_take(my_sem, K_FOREVER);
+		k_sem_take(my_sem, K_NO_WAIT);
 
 		tname = k_thread_name_get(k_current_get());
 		if (tname != NULL && tname[0] != '\0') {
@@ -45,54 +39,23 @@ void helloLoop(const char *my_name,
 	}
 }
 
-K_SEM_DEFINE(threadA_sem, 1, 1);
-K_SEM_DEFINE(threadB_sem, 0, 1);
 
 
 void threadB(void *dummy1, void *dummy2, void *dummy3)
 {
-	ARG_UNUSED(dummy1);
-	ARG_UNUSED(dummy2);
-	ARG_UNUSED(dummy3);
-
 	helloLoop(__func__, &threadB_sem, &threadA_sem);
 }
 
 K_THREAD_STACK_DEFINE(threadB_stack_area, STACKSIZE);
 static struct k_thread threadB_data;
 
-int i2c_hub_config(uint8_t instance)
-{
-	k_mutex_init(&i2c_inst[instance].mutex);
-	return 0;
-}
-
 void threadA(void *dummy1, void *dummy2, void *dummy3)
 {
-	ARG_UNUSED(dummy1);
-	ARG_UNUSED(dummy2);
-	ARG_UNUSED(dummy3);
-	
-	// i2c_hub_config(0);
-	// i2c_hub_config(1);
-
-	k_tid_t tid = k_thread_create(&threadB_data, threadB_stack_area,
-			STACKSIZE, threadB, NULL, NULL, NULL,
-			PRIORITY, 0, K_NO_WAIT);
-
-	k_thread_name_set(tid, "thread_b");
-
 	helloLoop(__func__, &threadA_sem, &threadB_sem);
 }
 
 K_THREAD_DEFINE(thread_a, STACKSIZE, threadA, NULL, NULL, NULL,
 		PRIORITY, 0, 0);
-
-int main() {
-
-	
-    k_thread_join(thread_a, K_FOREVER);
-    k_thread_join(&threadB_data, K_FOREVER);
-	return 0;
-}
+K_THREAD_DEFINE(thread_b, STACKSIZE, threadB, NULL, NULL, NULL,
+		PRIORITY, 0, 0);
 

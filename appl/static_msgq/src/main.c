@@ -1,37 +1,38 @@
-
 #include <zephyr/kernel.h>
+#include <stdio.h>
 
 #define STACKSIZE (1 << 10)
-#define MAX_WORK (1 << 8)
+#define MAX_WORK (1 << 2)
 #define PRIORITY 1
 
-K_THREAD_STACK_DEFINE(worker_stack_area, STACKSIZE);
-struct k_thread worker;
+/*
+ * High priority thread tries to get from a msgq
+ * If msgq is empty then low-priority thread will be scheduled and puts to the msgq
+ */
 
 K_MSGQ_DEFINE(work, sizeof(int), MAX_WORK, 4);
-K_MUTEX_DEFINE(guard);
 
-void do_work(void* a, void* b, void* c) {
+void do_put(void* a, void* b, void* c) {
     int done = 0;
     while(true) {
-        if (k_msgq_num_used_get(&work) == MAX_WORK * sizeof(int)) continue;
         int w = 0;
-        k_mutex_lock(&guard, K_FOREVER);
-        k_msgq_get(&work, &w, K_NO_WAIT);
-        k_mutex_unlock(&guard);
-        done += w;
+        printk("p");
+        k_msgq_put(&work, &w, K_NO_WAIT);
     }
 }
 
-int main(void) {
-    k_tid_t workerId = k_thread_create(&worker, worker_stack_area,
-        STACKSIZE, do_work, NULL, NULL, NULL, PRIORITY, 0, K_NO_WAIT);
-    int item = 0;
+void do_get(void* a, void* b, void* c) {
+    int done = 0;
     while(true) {
-        k_mutex_lock(&guard, K_FOREVER);
-        k_msgq_put(&work, &item, K_NO_WAIT);
-        k_mutex_unlock(&guard);
+        int w = 0;
+        printk("g");
+        k_msgq_get(&work, &w, K_FOREVER);
     }
-    return 0;
 }
 
+K_THREAD_DEFINE(thread_a, STACKSIZE, do_put, NULL, NULL, NULL,
+		PRIORITY+4, 0, 0);
+
+
+K_THREAD_DEFINE(thread_b, STACKSIZE, do_get, NULL, NULL, NULL,
+		PRIORITY, 0, 0);
