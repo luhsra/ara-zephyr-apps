@@ -67,6 +67,8 @@ dtc = find_program('dtc')
 
 compile_zephyr_app = files('compile_zephyr_app.py')[0]
 
+extra_conf = files('ara.conf')[0]
+
 boards = []
 if toolchains.get_variable('posix_enabled')
   boards += [{
@@ -155,6 +157,7 @@ foreach board : boards
                          # in https://github.com/zephyrproject-rtos/zephyr/pull/29359
                          'EXTRA_CFLAGS=-Wno-typedef-redefinition -Wno-unused-command-line-argument @0@'.format(board['cflags']),
                          'CMAKE_EXE_LINKER_FLAGS=@0@'.format(board['ldflags']),
+                         'EXTRA_CONF_FILE=' + extra_conf.full_path(),
         ]],
         env: gllvm_env,
     )
