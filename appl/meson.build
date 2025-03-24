@@ -35,7 +35,8 @@ zephyr_apps = [
     meson.current_source_dir() / 'static_timer',
     meson.current_source_dir() / 'static_isr',
     meson.current_source_dir() / 'OSPERT_2022',
-    meson.current_source_dir() / 'intel-ecfw-zephyr-dummy'
+    meson.current_source_dir() / 'intel-ecfw-zephyr-dummy',
+    meson.current_source_dir() / 'thread_metric'
 ]
 
 # Apps that require boards that support userspace applications
