@@ -35,8 +35,8 @@
 #error "*** Tests are only designed for single processor systems! ***"
 #endif
 
-static struct k_thread test_thread[TM_TEST_NUM_THREADS];
-static K_THREAD_STACK_ARRAY_DEFINE(test_stack, TM_TEST_NUM_THREADS, TM_TEST_STACK_SIZE);
+//static struct k_thread test_thread[TM_TEST_NUM_THREADS];
+//static K_THREAD_STACK_ARRAY_DEFINE(test_stack, TM_TEST_NUM_THREADS, TM_TEST_STACK_SIZE);
 
 static struct k_sem test_sem[TM_TEST_NUM_SEMAPHORES];
 
@@ -50,10 +50,10 @@ static char __aligned(4) test_slab_buffer[TM_TEST_NUM_SLABS][8 * 128];
  * This function called from main performs basic RTOS initialization,
  * calls the test initialization function, and then starts the RTOS function.
  */
-void tm_initialize(void (*test_initialization_function)(void))
-{
-	test_initialization_function();
-}
+//void tm_initialize(void (*test_initialization_function)(void))
+//{
+//	test_initialization_function();
+//}
 
 /*
  * This function takes a thread ID and priority and attempts to create the
@@ -61,43 +61,43 @@ void tm_initialize(void (*test_initialization_function)(void))
  * where 1 is the highest priority and 31 is the lowest. If successful,
  * the function should return TM_SUCCESS. Otherwise, TM_ERROR should be returned.
  */
-int tm_thread_create(int thread_id, int priority, void (*entry_function)(void *, void *, void *))
-{
-	k_tid_t tid;
-
-	tid = k_thread_create(&test_thread[thread_id], test_stack[thread_id],
-			      TM_TEST_STACK_SIZE, entry_function,
-			      NULL, NULL, NULL, priority, 0, K_FOREVER);
-
-	/* Thread started in sleeping state. Switch to suspended state */
-
-	k_thread_suspend(&test_thread[thread_id]);
-	k_wakeup(&test_thread[thread_id]);
-
-	return (tid == &test_thread[thread_id]) ? TM_SUCCESS : TM_ERROR;
-}
+//int tm_thread_create(int thread_id, int priority, void (*entry_function)(void *, void *, void *))
+//{
+//	k_tid_t tid;
+//
+//	tid = k_thread_create(&test_thread[thread_id], test_stack[thread_id],
+//			      TM_TEST_STACK_SIZE, entry_function,
+//			      NULL, NULL, NULL, priority, 0, K_FOREVER);
+//
+//	/* Thread started in sleeping state. Switch to suspended state */
+//
+//	k_thread_suspend(&test_thread[thread_id]);
+//	k_wakeup(&test_thread[thread_id]);
+//
+//	return (tid == &test_thread[thread_id]) ? TM_SUCCESS : TM_ERROR;
+//}
 
 /*
  * This function resumes the specified thread.  If successful, the function should
  * return TM_SUCCESS. Otherwise, TM_ERROR should be returned.
  */
-int tm_thread_resume(int thread_id)
-{
-	k_thread_resume(&test_thread[thread_id]);
-
-	return TM_SUCCESS;
-}
+//int tm_thread_resume(int thread_id)
+//{
+//	k_thread_resume(&test_thread[thread_id]);
+//
+//	return TM_SUCCESS;
+//}
 
 /*
  * This function suspends the specified thread.  If successful, the function should
  * return TM_SUCCESS. Otherwise, TM_ERROR should be returned.
  */
-int tm_thread_suspend(int thread_id)
-{
-	k_thread_suspend(&test_thread[thread_id]);
-
-	return TM_SUCCESS;
-}
+//int tm_thread_suspend(int thread_id)
+//{
+//	k_thread_suspend(&test_thread[thread_id]);
+//
+//	return TM_SUCCESS;
+//}
 
 /*
  * This function relinquishes to other ready threads at the same

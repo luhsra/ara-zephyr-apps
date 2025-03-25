@@ -81,7 +81,7 @@ void tm_memory_allocation_initialize(void)
 	/* Resume thread 0.  */
 	tm_thread_resume(0);
 
-	tm_memory_allocation_thread_report();
+	//tm_memory_allocation_thread_report();
 }
 
 /* Define the memory allocation processing thread.  */

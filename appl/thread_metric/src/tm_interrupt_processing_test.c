@@ -90,7 +90,7 @@ void tm_interrupt_processing_initialize(void)
 	/* Resume just thread 0.  */
 	tm_thread_resume(0);
 
-	tm_interrupt_thread_report();
+	//tm_interrupt_thread_report();
 }
 
 /* Define the thread that generates the interrupt.  */

@@ -95,7 +95,7 @@ void tm_cooperative_scheduling_initialize(void)
 	tm_thread_resume(3);
 	tm_thread_resume(4);
 
-	tm_cooperative_thread_report();
+	//tm_cooperative_thread_report();
 }
 
 /* Define the first cooperative thread.  */

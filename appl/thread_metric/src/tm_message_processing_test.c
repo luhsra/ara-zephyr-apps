@@ -84,7 +84,7 @@ void tm_message_processing_initialize(void)
 	/* Create a queue for the message passing.  */
 	tm_queue_create(0);
 
-	tm_message_processing_thread_report();
+	//tm_message_processing_thread_report();
 }
 
 /* Define the message processing thread.  */

@@ -87,7 +87,7 @@ void tm_basic_processing_initialize(void)
 	/* Resume thread 0.  */
 	tm_thread_resume(0);
 
-	tm_basic_processing_thread_report();
+	//tm_basic_processing_thread_report();
 }
 
 /* Define the basic processing thread.  */

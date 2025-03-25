@@ -82,7 +82,7 @@ void tm_synchronization_processing_initialize(void)
 	/* Create a semaphore for the test.  */
 	tm_semaphore_create(0);
 
-	tm_synchronization_processing_thread_report();
+	//tm_synchronization_processing_thread_report();
 }
 
 /* Define the synchronization processing thread.  */

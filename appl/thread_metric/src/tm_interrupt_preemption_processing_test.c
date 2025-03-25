@@ -90,7 +90,7 @@ void tm_interrupt_preemption_processing_initialize(void)
 	/* Resume just thread 1.  */
 	tm_thread_resume(1);
 
-	tm_interrupt_preemption_thread_report();
+	//tm_interrupt_preemption_thread_report();
 }
 
 /*
