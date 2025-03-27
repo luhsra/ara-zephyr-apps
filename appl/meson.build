@@ -36,7 +36,14 @@ zephyr_apps = [
     meson.current_source_dir() / 'static_isr',
     meson.current_source_dir() / 'OSPERT_2022',
     meson.current_source_dir() / 'intel-ecfw-zephyr-dummy',
-    meson.current_source_dir() / 'thread_metric'
+    meson.current_source_dir() / 'thread_metric' / 'tm_basic',
+    meson.current_source_dir() / 'thread_metric' / 'tm_cooperative',
+    meson.current_source_dir() / 'thread_metric' / 'tm_interrupt',
+    meson.current_source_dir() / 'thread_metric' / 'tm_interrupt_preemption',
+    meson.current_source_dir() / 'thread_metric' / 'tm_memory_allocation',
+    meson.current_source_dir() / 'thread_metric' / 'tm_message',
+    meson.current_source_dir() / 'thread_metric' / 'tm_preemptive',
+    meson.current_source_dir() / 'thread_metric' / 'tm_synchronization',
 ]
 
 # Apps that require boards that support userspace applications
@@ -126,13 +133,31 @@ foreach board : boards
   foreach app : apps
     app_name = fs.name(app)
     tgt_name = f'@board_name@-@app_name@'
+
+    if app_name.contains('tm_')
+      app = fs.name(app)
+      app_dir = meson.current_source_dir() / 'thread_metric'
+
+      tm_conf = configure_file(
+          input: app_dir / 'tm_config.conf.in',
+          output: f'tm_config_@app@.conf',
+          configuration: {'benchmark': app_name.to_upper()}
+      )
+      dyn_extra_conf = tm_conf
+
+    else
+      app_dir = app
+      dyn_extra_conf = extra_conf
+    endif
+
     target = custom_target(tgt_name,
+      input: dyn_extra_conf,
       output: [tgt_name + '.ll', tgt_name + '.config', tgt_name + '-kernel.elf', tgt_name + '-kernel.map'],
       depends: ara_link,
       command: [
         py3_inst, compile_zephyr_app,
         '--cmake-builddir', meson.current_build_dir() / tgt_name + '_build',
-        '--app-dir', app,
+        '--app-dir', app_dir,
         '--cmake-program', cmake_tool.full_path(),
         '--ninja-program', ninja.full_path(),
         '--zephyr-dir', zephyr_work_dir / 'zephyr',
@@ -158,7 +183,7 @@ foreach board : boards
                          # in https://github.com/zephyrproject-rtos/zephyr/pull/29359
                          'EXTRA_CFLAGS=-Wno-typedef-redefinition -Wno-unused-command-line-argument @0@'.format(board['cflags']),
                          'CMAKE_EXE_LINKER_FLAGS=@0@'.format(board['ldflags']),
-                         'EXTRA_CONF_FILE=' + extra_conf.full_path(),
+                         'EXTRA_CONF_FILE=' + extra_conf.full_path() + ' ' + dyn_extra_conf.full_path(),
         ]],
         env: gllvm_env,
     )

@@ -80,17 +80,17 @@ extern "C" {
 //int tm_thread_create(int thread_id, int priority, void (*entry_function)(void *, void *, void *));
 //int tm_thread_resume(int thread_id);
 //int tm_thread_suspend(int thread_id);
-void tm_thread_relinquish(void);
-void tm_thread_sleep(int seconds);
-int tm_queue_create(int queue_id);
-int tm_queue_send(int queue_id, unsigned long *message_ptr);
-int tm_queue_receive(int queue_id, unsigned long *message_ptr);
-int tm_semaphore_create(int semaphore_id);
-int tm_semaphore_get(int semaphore_id);
-int tm_semaphore_put(int semaphore_id);
-int tm_memory_pool_create(int pool_id);
-int tm_memory_pool_allocate(int pool_id, unsigned char **memory_ptr);
-int tm_memory_pool_deallocate(int pool_id, unsigned char *memory_ptr);
+//void tm_thread_relinquish(void);
+//void tm_thread_sleep(int seconds);
+//int tm_queue_create(int queue_id);
+//int tm_queue_send(int queue_id, unsigned long *message_ptr);
+//int tm_queue_receive(int queue_id, unsigned long *message_ptr);
+//int tm_semaphore_create(int semaphore_id);
+//int tm_semaphore_get(int semaphore_id);
+//int tm_semaphore_put(int semaphore_id);
+//int tm_memory_pool_create(int pool_id);
+//int tm_memory_pool_allocate(int pool_id, unsigned char **memory_ptr);
+//int tm_memory_pool_deallocate(int pool_id, unsigned char *memory_ptr);
 
 /*
  * Determine if a C++ compiler is being used.  If so, complete the standard
