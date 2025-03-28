@@ -41,6 +41,15 @@ static char test_msgq_buffer_1[8][16];
 static char test_msgq_buffer_2[8][16];
 static char test_msgq_buffer_3[8][16];
 
+static struct k_mem_slab test_slab_0;
+static struct k_mem_slab test_slab_1;
+static struct k_mem_slab test_slab_2;
+static struct k_mem_slab test_slab_3;
+static char __aligned(4) test_slab_buffer_0[8 * 128];
+static char __aligned(4) test_slab_buffer_1[8 * 128];
+static char __aligned(4) test_slab_buffer_2[8 * 128];
+static char __aligned(4) test_slab_buffer_3[8 * 128];
+
 /*
  * This function called from main performs basic RTOS initialization,
  * calls the test initialization function, and then starts the RTOS function.
@@ -113,7 +122,7 @@ static char test_msgq_buffer_3[8][16];
  */
 #define tm_queue_send(queue_id, message_ptr)                                   \
   do {                                                                         \
-    k_msgq_put(&test_msgq_##queue_id, message_ptr, K_FOREVER);                  \
+    k_msgq_put(&test_msgq_##queue_id, message_ptr, K_FOREVER);                 \
   } while (0)
 
 /*
@@ -123,7 +132,7 @@ static char test_msgq_buffer_3[8][16];
  */
 #define tm_queue_receive(queue_id, message_ptr)                                \
   do {                                                                         \
-    k_msgq_get(&test_msgq_##queue_id, message_ptr, K_FOREVER);                  \
+    k_msgq_get(&test_msgq_##queue_id, message_ptr, K_FOREVER);                 \
   } while (0)
 
 /*
@@ -155,6 +164,37 @@ static char test_msgq_buffer_3[8][16];
   do {                                                                         \
     k_sem_give(&test_sem_##semaphore_id);                                      \
     /*return TM_SUCCESS;*/                                                     \
+  } while (0)
+
+/*
+ * This function creates the specified memory pool that can support one or more
+ * allocations of 128 bytes.  If successful, the function should
+ * return TM_SUCCESS. Otherwise, TM_ERROR should be returned.
+ */
+#define tm_memory_pool_create(pool_id)                                         \
+  do {                                                                         \
+    k_mem_slab_init(&test_slab_##pool_id, test_slab_buffer_##pool_id, 128, 8); \
+  } while (0)
+
+/*
+ * This function allocates a 128 byte block from the specified memory pool.
+ * If successful, the function should return TM_SUCCESS. Otherwise, TM_ERROR
+ * should be returned.
+ */
+#define tm_memory_pool_allocate(pool_id, memory_ptr)                           \
+  do {                                                                         \
+    k_mem_slab_alloc(&test_slab_##pool_id, memory_ptr, K_NO_WAIT);             \
+  } while (0)
+
+/*
+ * This function releases a previously allocated 128 byte block from the
+ * specified memory pool. If successful, the function should return TM_SUCCESS.
+ * Otherwise, TM_ERROR should be returned.
+ */
+#define tm_memory_pool_deallocate(pool_id, memory_ptr)                         \
+  TM_SUCCESS;                                                                  \
+  do {                                                                         \
+    k_mem_slab_free(&test_slab_##pool_id, memory_ptr);                         \
   } while (0)
 
 #endif

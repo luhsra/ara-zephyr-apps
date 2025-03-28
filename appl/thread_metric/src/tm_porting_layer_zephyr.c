@@ -43,9 +43,8 @@
 //static struct k_msgq test_msgq[TM_TEST_NUM_MESSAGE_QUEUES];
 //static char test_msgq_buffer[TM_TEST_NUM_MESSAGE_QUEUES][8][16];
 
-static struct k_mem_slab test_slab[TM_TEST_NUM_SLABS];
-static char __aligned(4) test_slab_buffer[TM_TEST_NUM_SLABS][8 * 128];
-
+//static struct k_mem_slab test_slab[TM_TEST_NUM_SLABS];
+//static char __aligned(4) test_slab_buffer[TM_TEST_NUM_SLABS][8 * 128];
 
 
 /*
@@ -77,42 +76,3 @@ void tm_cause_interrupt(void)
 	irq_disable(42);
 }
 
-/*
- * This function creates the specified memory pool that can support one or more
- * allocations of 128 bytes.  If successful, the function should
- * return TM_SUCCESS. Otherwise, TM_ERROR should be returned.
- */
-int tm_memory_pool_create(int pool_id)
-{
-	int status;
-
-	status = k_mem_slab_init(&test_slab[pool_id], &test_slab_buffer[pool_id][0], 128, 8);
-
-	return (status == 0) ? TM_SUCCESS : TM_ERROR;
-}
-
-/*
- * This function allocates a 128 byte block from the specified memory pool.
- * If successful, the function should return TM_SUCCESS. Otherwise, TM_ERROR
- * should be returned.
- */
-int tm_memory_pool_allocate(int pool_id, unsigned char **memory_ptr)
-{
-	int status;
-
-	status = k_mem_slab_alloc(&test_slab[pool_id], (void **)memory_ptr, K_NO_WAIT);
-
-	return (status == 0) ? TM_SUCCESS : TM_ERROR;
-}
-
-/*
- * This function releases a previously allocated 128 byte block from the specified
- * memory pool. If successful, the function should return TM_SUCCESS. Otherwise, TM_ERROR
- * should be returned.
- */
-int tm_memory_pool_deallocate(int pool_id, unsigned char *memory_ptr)
-{
-	k_mem_slab_free(&test_slab[pool_id], (void *)memory_ptr);
-
-	return TM_SUCCESS;
-}
