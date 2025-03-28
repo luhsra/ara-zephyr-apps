@@ -31,6 +31,16 @@ static struct k_sem test_sem_1;
 static struct k_sem test_sem_2;
 static struct k_sem test_sem_3;
 
+static struct k_msgq test_msgq_0;
+static struct k_msgq test_msgq_1;
+static struct k_msgq test_msgq_2;
+static struct k_msgq test_msgq_3;
+
+static char test_msgq_buffer_0[8][16];
+static char test_msgq_buffer_1[8][16];
+static char test_msgq_buffer_2[8][16];
+static char test_msgq_buffer_3[8][16];
+
 /*
  * This function called from main performs basic RTOS initialization,
  * calls the test initialization function, and then starts the RTOS function.
@@ -82,6 +92,38 @@ static struct k_sem test_sem_3;
   do {                                                                         \
     k_thread_suspend(&test_thread_##thread_id);                                \
     /*return */                                                                \
+  } while (0)
+
+/*
+ * This function creates the specified queue.  If successful, the function
+ * should return TM_SUCCESS. Otherwise, TM_ERROR should be returned.
+ */
+#define tm_queue_create(queue_id)                                              \
+  do {                                                                         \
+    k_msgq_init(&test_msgq_##queue_id, &test_msgq_buffer_##queue_id[0][0], 16, \
+                8);                                                            \
+                                                                               \
+    /*return TM_SUCCESS;*/                                                     \
+  } while (0)
+
+/*
+ * This function sends a 16-byte message to the specified queue.  If successful,
+ * the function should return TM_SUCCESS. Otherwise, TM_ERROR should be
+ * returned.
+ */
+#define tm_queue_send(queue_id, message_ptr)                                   \
+  do {                                                                         \
+    k_msgq_put(&test_msgq_##queue_id, message_ptr, K_FOREVER);                  \
+  } while (0)
+
+/*
+ * This function receives a 16-byte message from the specified queue.  If
+ * successful, the function should return TM_SUCCESS. Otherwise, TM_ERROR should
+ * be returned.
+ */
+#define tm_queue_receive(queue_id, message_ptr)                                \
+  do {                                                                         \
+    k_msgq_get(&test_msgq_##queue_id, message_ptr, K_FOREVER);                  \
   } while (0)
 
 /*

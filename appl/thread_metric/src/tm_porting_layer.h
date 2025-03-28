@@ -11,6 +11,7 @@
 #ifndef TM_PORTING_LAYER_H
 #define TM_PORTING_LAYER_H
 
+#include <stdio.h>
 #include "tm_porting_layer_zephyr.h"
 
 extern void tm_cause_interrupt(void);

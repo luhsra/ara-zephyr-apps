@@ -40,8 +40,8 @@
 
 //static struct k_sem test_sem[TM_TEST_NUM_SEMAPHORES];
 
-static struct k_msgq test_msgq[TM_TEST_NUM_MESSAGE_QUEUES];
-static char test_msgq_buffer[TM_TEST_NUM_MESSAGE_QUEUES][8][16];
+//static struct k_msgq test_msgq[TM_TEST_NUM_MESSAGE_QUEUES];
+//static char test_msgq_buffer[TM_TEST_NUM_MESSAGE_QUEUES][8][16];
 
 static struct k_mem_slab test_slab[TM_TEST_NUM_SLABS];
 static char __aligned(4) test_slab_buffer[TM_TEST_NUM_SLABS][8 * 128];
@@ -65,36 +65,6 @@ void tm_thread_sleep(int seconds)
 {
 	k_sleep(K_SECONDS(seconds));
 }
-
-/*
- * This function creates the specified queue.  If successful, the function should
- * return TM_SUCCESS. Otherwise, TM_ERROR should be returned.
- */
-int tm_queue_create(int queue_id)
-{
-	k_msgq_init(&test_msgq[queue_id], &test_msgq_buffer[queue_id][0][0], 16, 8);
-
-	return TM_SUCCESS;
-}
-
-/*
- * This function sends a 16-byte message to the specified queue.  If successful,
- * the function should return TM_SUCCESS. Otherwise, TM_ERROR should be returned.
- */
-int tm_queue_send(int queue_id, unsigned long *message_ptr)
-{
-	return k_msgq_put(&test_msgq[queue_id], message_ptr, K_FOREVER);
-}
-
-/*
- * This function receives a 16-byte message from the specified queue.  If successful,
- * the function should return TM_SUCCESS. Otherwise, TM_ERROR should be returned.
- */
-int tm_queue_receive(int queue_id, unsigned long *message_ptr)
-{
-	return k_msgq_get(&test_msgq[queue_id], message_ptr, K_FOREVER);
-}
-
 
 /* This function is defined by the benchmark. */
 extern void tm_interrupt_handler(const void *);
