@@ -65,6 +65,7 @@ void tm_thread_sleep(int seconds)
 	k_sleep(K_SECONDS(seconds));
 }
 
+#if defined(CONFIG_TM_INTERRUPT) || defined(CONFIG_TM_INTERRUPT_PREEMPTION)
 /* This function is defined by the benchmark. */
 extern void tm_interrupt_handler(const void *);
 
@@ -75,4 +76,4 @@ void tm_cause_interrupt(void)
 	irq_offload(tm_interrupt_handler, NULL);
 	irq_disable(42);
 }
-
+#endif
