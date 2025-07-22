@@ -151,7 +151,7 @@ static char __aligned(4) test_slab_buffer_3[8 * 128];
 #define tm_semaphore_get(semaphore_id)                                         \
   TM_SUCCESS;                                                                  \
   do {                                                                         \
-    k_sem_take(&test_sem_##semaphore_id, K_NO_WAIT);                           \
+    k_sem_take(&test_sem_##semaphore_id, K_FOREVER);                           \
     /*return */                                                                \
   } while (0)
 

@@ -73,7 +73,7 @@ void tm_cause_interrupt(void)
 {
 	IRQ_CONNECT(42, 1, tm_interrupt_handler, NULL, 0);
 	irq_enable(42);
-	irq_offload(tm_interrupt_handler, NULL);
+	//irq_offload(tm_interrupt_handler, NULL);
 	irq_disable(42);
 }
 #endif

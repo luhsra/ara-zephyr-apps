@@ -77,6 +77,7 @@ int main(void)
 
 void tm_interrupt_processing_initialize(void)
 {
+	tm_semaphore_create(0);
 
 	/* Create thread that generates the interrupt at priority 10.  */
 	tm_thread_create(0, 10, tm_interrupt_thread_0_entry);
@@ -85,7 +86,6 @@ void tm_interrupt_processing_initialize(void)
 	 * Create a semaphore that will be posted from the interrupt
 	 * handler.
 	 */
-	tm_semaphore_create(0);
 
 	/* Resume just thread 0.  */
 	tm_thread_resume(0);
