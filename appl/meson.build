@@ -47,8 +47,25 @@ zephyr_apps = [
 
 # Add Xen guests here
 zephyr_apps += [
-  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'zephyr' / 'Zephyr-A',
-  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'zephyr-hc' / 'Zephyr-A2',
+  # --------------------------- minimal ----------------------------------
+  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'min-zephyr' / 'Zephyr-min-1',
+  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'min-zephyr' / 'Zephyr-min-2',
+  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'min-1' / 'Zephyr-min-3',
+  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'min-2' / 'Zephyr-min-4',
+  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'zephyr-sleep' / 'Zephyr-sleep',
+  
+  # --------------------------- hypercalls  ----------------------------------
+  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-zephyr' / 'Zephyr-hc-1',
+  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-zephyr' / 'Zephyr-hc-2',
+  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-1' / 'Zephyr-hc-3',
+  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-2' / 'Zephyr-hc-4',
+  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-zephyr-noiit' / 'Zephyr-hc-5',
+  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-zephyr-noiit' / 'Zephyr-hc-6',
+
+  # --------------------------- complex ----------------------------------
+  # --------------------------- BareMetal ----------------------------------
+  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hardware' / 'Zephyr-hw',
+
 ]
 
 # Apps that require boards that support userspace applications
@@ -156,8 +173,9 @@ foreach board : boards
     endif
 
     # Would like to include this as input file, then it would auto rebuild on changes!
-    # message(app_dir / 'src' / 'main.c')
+    message(app_dir / 'src' / 'main.c')
     target = custom_target(tgt_name,
+      # input: [dyn_extra_conf, app_dir / 'src' / 'main.c'],
       input: dyn_extra_conf,
       output: [tgt_name + '.ll', tgt_name + '.config', tgt_name + '-kernel.elf', tgt_name + '-kernel.map'],
       depends: ara_link,
