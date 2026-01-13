@@ -66,6 +66,8 @@ zephyr_apps += [
   # --------------------------- BareMetal ----------------------------------
   zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hardware' / 'Zephyr-hw',
 
+  # --------------------------- ECRTS26-Paper ----------------------------------
+  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'braking' / 'Zephyr-B',
 ]
 
 # Apps that require boards that support userspace applications
