@@ -1,0 +1,2 @@
+# do not change this, controled by root meson_options.txt
+option('include_xen', type: 'boolean', value: true, yield: true, description: 'If ara/appl/Xen apps should be included, needed for HyperSSE and ara-xen-eval.')

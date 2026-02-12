@@ -101,12 +101,18 @@ compile_zephyr_app = files('compile_zephyr_app.py')[0]
 
 extra_conf = files('ara.conf')[0]
 
+cflags = ''
+# Xen's Zephyr applications need access to this header
+if get_option('include_xen')
+  cflags += ' -I ' + zephyr_source_dir / '..' / 'ara' / 'libs' / 'xen'
+endif
+
 boards = []
 if toolchains.get_variable('posix_enabled')
   boards += [{
     'name': 'native_sim',
     'apps': zephyr_apps,
-    'cflags': '',
+    'cflags': cflags,
     'ldflags': '',
   }]
 endif
@@ -114,7 +120,7 @@ if toolchains.get_variable('arm_enabled')
     boards += [{
     'name': 'qemu_cortex_m3',
     'apps': zephyr_apps,
-    'cflags': '-mcpu=cortex-m3 -mfloat-abi=soft',
+    'cflags': '-mcpu=cortex-m3 -mfloat-abi=soft' + cflags,
     'ldflags': '-fuse-ld=@0@ -L @1@'.format(toolchains.get_variable('arm_ld').full_path(),toolchains.get_variable('arm_libgcc_dir')),
   }]
 endif
@@ -151,6 +157,10 @@ gllvm_env = {
 zephyr_targets = []
 zephyr_only_targets = []
 kernel_targets = []
+
+if get_option('include_xen')
+  xen_zephry_kernel_targets = []
+endif
 foreach board : boards
   board_name = board['name']
   apps = board['apps']
@@ -175,7 +185,7 @@ foreach board : boards
     endif
 
     # Would like to include this as input file, then it would auto rebuild on changes!
-    message(app_dir / 'src' / 'main.c')
+    # message(app_dir / 'src' / 'main.c')
     target = custom_target(tgt_name,
       # input: [dyn_extra_conf, app_dir / 'src' / 'main.c'],
       input: dyn_extra_conf,
@@ -234,11 +244,19 @@ foreach board : boards
     zephyr_targets += {'ll': target[0], 'config': target[1], 'cloc_app': [app], 'kernel_ll': kernel_ll}
     zephyr_only_targets += [target]
     kernel_targets += kernel_ll
+
+    # Create list of all xen relevant targets
+    if get_option('include_xen')
+      if app.contains('Xen') and board_name == 'native_sim'
+        xen_zephry_kernel_targets += kernel_ll
+      endif
+    endif
+
   endforeach
 endforeach
+
 
 nop = find_program('true')
 all_apps = 'build-zephyr-apps'
 run_target(all_apps, command: nop, depends: [zephyr_only_targets, kernel_targets])
 summary('Build all ARA Zephyr apps', f'meson compile @all_apps@')
-
