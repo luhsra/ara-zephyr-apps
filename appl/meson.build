@@ -61,13 +61,18 @@ zephyr_apps += [
   zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-2' / 'Zephyr-hc-4',
   zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-zephyr-noiit' / 'Zephyr-hc-5',
   zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-zephyr-noiit' / 'Zephyr-hc-6',
+  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-zephyr2' / 'Zephyr-hc-7',
+  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-zephyr2' / 'Zephyr-hc-8',
 
   # --------------------------- complex ----------------------------------
   # --------------------------- BareMetal ----------------------------------
   zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hardware' / 'Zephyr-hw',
 
   # --------------------------- ECRTS26-Paper ----------------------------------
-  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'braking' / 'Zephyr-B',
+  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'braking' / 'Zephyr-B-1',
+  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'braking' / 'Zephyr-B-2',
+  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'braking' / 'Zephyr-B-3',
+  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'braking' / 'Zephyr-B-4',
 ]
 
 # Apps that require boards that support userspace applications
