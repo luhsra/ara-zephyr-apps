@@ -50,19 +50,21 @@ zephyr_apps += [
   # --------------------------- minimal ----------------------------------
   zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'min-zephyr' / 'Zephyr-min-1',
   zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'min-zephyr' / 'Zephyr-min-2',
-  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'min-1' / 'Zephyr-min-3',
-  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'min-2' / 'Zephyr-min-4',
+  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'min-az' / 'Zephyr-min-3',
+  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'min-zb' / 'Zephyr-min-4',
   zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'zephyr-sleep' / 'Zephyr-sleep',
   
   # --------------------------- hypercalls  ----------------------------------
   zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-zephyr' / 'Zephyr-hc-1',
   zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-zephyr' / 'Zephyr-hc-2',
-  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-1' / 'Zephyr-hc-3',
-  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-2' / 'Zephyr-hc-4',
-  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-zephyr-noiit' / 'Zephyr-hc-5',
-  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-zephyr-noiit' / 'Zephyr-hc-6',
   zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-zephyr2' / 'Zephyr-hc-7',
   zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-zephyr2' / 'Zephyr-hc-8',
+  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-a-z1' / 'Zephyr-hc-3',
+  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-z-b1' / 'Zephyr-hc-4',
+  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-a-z2' / 'Zephyr-hc-5',
+  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-z-b2' / 'Zephyr-hc-6',
+  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-zephyr-notiming' / 'Zephyr-hc-9',
+  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-zephyr-notiming' / 'Zephyr-hc-10',
 
   # --------------------------- complex ----------------------------------
   # --------------------------- BareMetal ----------------------------------
