@@ -71,10 +71,8 @@ zephyr_apps += [
   zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hardware' / 'Zephyr-hw',
 
   # --------------------------- ECRTS26-Paper ----------------------------------
-  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'braking' / 'Zephyr-B-1',
-  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'braking' / 'Zephyr-B-2',
-  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'braking' / 'Zephyr-B-3',
-  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'braking' / 'Zephyr-B-4',
+  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'braking' / 'Zephyr-B-1-AckHMI',
+  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'braking' / 'Zephyr-B-2-SlowAckHMI',
 ]
 
 # Apps that require boards that support userspace applications
