@@ -112,6 +112,9 @@ if get_option('include_xen')
   cflags += ' -I ' + zephyr_source_dir / '..' / 'ara' / 'libs' / 'xen'
 endif
 
+# helper for ara_timing_info, used for timing analysis. included to enable linking
+cflags += ' --include ' + zephyr_source_dir / '..' / 'ara' / 'libs' / 'ara.h'
+
 boards = []
 if toolchains.get_variable('posix_enabled')
   boards += [{
