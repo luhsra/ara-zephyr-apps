@@ -1,7 +1,8 @@
 project('zephyr-apps', 'cpp',
     default_options : ['warning_level=3',
                        'cpp_std=c++17',
-                       'buildtype=debugoptimized'])
+                       'buildtype=debugoptimized'],
+    meson_version: '>=1.10.0', version: 'SRA\'26')
 
 llvm_version = ['>=14', '<16']
 llvm_dep = dependency('llvm', method: 'config-tool', version: llvm_version, include_type: 'system')

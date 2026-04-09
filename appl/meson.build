@@ -45,35 +45,37 @@ zephyr_apps = [
     meson.current_source_dir() / 'thread_metric' / 'tm_synchronization',
 ]
 
-# Add Xen guests here
-zephyr_apps += [
-  # --------------------------- minimal ----------------------------------
-  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'min-zephyr' / 'Zephyr-min-1',
-  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'min-zephyr' / 'Zephyr-min-2',
-  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'min-az' / 'Zephyr-min-3',
-  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'min-zb' / 'Zephyr-min-4',
-  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'zephyr-sleep' / 'Zephyr-sleep',
-  
-  # --------------------------- hypercalls  ----------------------------------
-  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-zephyr' / 'Zephyr-hc-1',
-  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-zephyr' / 'Zephyr-hc-2',
-  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-zephyr2' / 'Zephyr-hc-7',
-  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-zephyr2' / 'Zephyr-hc-8',
-  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-a-z1' / 'Zephyr-hc-3',
-  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-z-b1' / 'Zephyr-hc-4',
-  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-a-z2' / 'Zephyr-hc-5',
-  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-z-b2' / 'Zephyr-hc-6',
-  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-zephyr-notiming' / 'Zephyr-hc-9',
-  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-zephyr-notiming' / 'Zephyr-hc-10',
+if get_option('build_hypersse_xen')
+  # Add Xen guests here
+  zephyr_apps += [
+    # --------------------------- minimal ----------------------------------
+    zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'min-zephyr' / 'Zephyr-min-1',
+    zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'min-zephyr' / 'Zephyr-min-2',
+    zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'min-az' / 'Zephyr-min-3',
+    zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'min-zb' / 'Zephyr-min-4',
+    zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'zephyr-sleep' / 'Zephyr-sleep',
+    
+    # --------------------------- hypercalls  ----------------------------------
+    zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-zephyr' / 'Zephyr-hc-1',
+    zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-zephyr' / 'Zephyr-hc-2',
+    zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-zephyr2' / 'Zephyr-hc-7',
+    zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-zephyr2' / 'Zephyr-hc-8',
+    zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-a-z1' / 'Zephyr-hc-3',
+    zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-z-b1' / 'Zephyr-hc-4',
+    zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-a-z2' / 'Zephyr-hc-5',
+    zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-z-b2' / 'Zephyr-hc-6',
+    zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-zephyr-notiming' / 'Zephyr-hc-9',
+    zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hc-zephyr-notiming' / 'Zephyr-hc-10',
 
-  # --------------------------- complex ----------------------------------
-  # --------------------------- BareMetal ----------------------------------
-  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hardware' / 'Zephyr-hw',
+    # --------------------------- complex ----------------------------------
+    # --------------------------- BareMetal ----------------------------------
+    zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'hardware' / 'Zephyr-hw',
 
-  # --------------------------- ECRTS26-Paper ----------------------------------
-  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'braking' / 'Zephyr-B-1-AckHMI',
-  zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'braking' / 'Zephyr-B-2-SlowAckHMI',
-]
+    # --------------------------- ECRTS26-Paper ----------------------------------
+    zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'braking' / 'Zephyr-B-1-AckHMI',
+    zephyr_source_dir / '..' / 'ara' / 'appl' / 'Xen' / 'braking' / 'Zephyr-B-2-SlowAckHMI',
+  ]
+endif
 
 # Apps that require boards that support userspace applications
 z_userspace_apps = [
@@ -108,7 +110,7 @@ extra_conf = files('ara.conf')[0]
 
 cflags = ''
 # Xen's Zephyr applications need access to this header
-if get_option('include_xen')
+if get_option('build_hypersse_xen')
   cflags += ' -I ' + zephyr_source_dir / '..' / 'ara' / 'libs' / 'xen'
 endif
 
@@ -166,7 +168,7 @@ zephyr_targets = []
 zephyr_only_targets = []
 kernel_targets = []
 
-if get_option('include_xen')
+if get_option('build_hypersse_xen')
   xen_zephry_kernel_targets = []
 endif
 foreach board : boards
@@ -254,7 +256,7 @@ foreach board : boards
     kernel_targets += kernel_ll
 
     # Create list of all xen relevant targets
-    if get_option('include_xen')
+    if get_option('build_hypersse_xen')
       if app.contains('Xen') and board_name == 'native_sim'
         xen_zephry_kernel_targets += kernel_ll
       endif
