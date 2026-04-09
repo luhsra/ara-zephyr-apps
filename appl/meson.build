@@ -126,14 +126,14 @@ if toolchains.get_variable('posix_enabled')
     'ldflags': '',
   }]
 endif
-if toolchains.get_variable('arm_enabled')
-    boards += [{
-    'name': 'qemu_cortex_m3',
-    'apps': zephyr_apps,
-    'cflags': '-mcpu=cortex-m3 -mfloat-abi=soft' + cflags,
-    'ldflags': '-fuse-ld=@0@ -L @1@'.format(toolchains.get_variable('arm_ld').full_path(), toolchains.get_variable('arm_libgcc_dir')),
-  }]
-endif
+#if toolchains.get_variable('arm_enabled')
+#    boards += [{
+#    'name': 'qemu_cortex_m3',
+#    'apps': zephyr_apps,
+#    'cflags': '-mcpu=cortex-m3 -mfloat-abi=soft' + cflags,
+#    'ldflags': '-fuse-ld=@0@ -L @1@'.format(toolchains.get_variable('arm_ld').full_path(), toolchains.get_variable('arm_libgcc_dir')),
+#  }]
+#endif
 
 if toolchains.get_variable('riscv_enabled')
     boards += [{
