@@ -99,7 +99,7 @@ void tm_preemptive_scheduling_initialize(void)
 	/* Resume just thread 0.  */
 	tm_thread_resume(0);
 
-	//tm_preemptive_thread_report();
+	tm_preemptive_thread_report();
 }
 
 /* Define the first preemptive thread.  */

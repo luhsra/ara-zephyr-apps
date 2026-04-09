@@ -131,7 +131,16 @@ if toolchains.get_variable('arm_enabled')
     'name': 'qemu_cortex_m3',
     'apps': zephyr_apps,
     'cflags': '-mcpu=cortex-m3 -mfloat-abi=soft' + cflags,
-    'ldflags': '-fuse-ld=@0@ -L @1@'.format(toolchains.get_variable('arm_ld').full_path(),toolchains.get_variable('arm_libgcc_dir')),
+    'ldflags': '-fuse-ld=@0@ -L @1@'.format(toolchains.get_variable('arm_ld').full_path(), toolchains.get_variable('arm_libgcc_dir')),
+  }]
+endif
+
+if toolchains.get_variable('riscv_enabled')
+    boards += [{
+    'name': 'xiao_esp32c3',
+    'apps': zephyr_apps,
+    'cflags': cflags,
+    'ldflags': '-fuse-ld=@0@ -L @1@'.format(toolchains.get_variable('riscv_ld').full_path(),toolchains.get_variable('riscv_libgcc_dir') / 'rv32imac' / 'ilp32'),
   }]
 endif
 
@@ -250,8 +259,15 @@ foreach board : boards
       output: f'@tgt_name@-kernel.ll',
       command: [llvm_dis, '-o=@OUTPUT@', '@INPUT@'],
     )
-    
-    zephyr_targets += {'ll': target[0], 'config': target[1], 'cloc_app': [app], 'kernel_ll': kernel_ll}
+
+    va_target = {'ll': target[0], 'config': target[1], 'cloc_app': [app], 'kernel_ll': kernel_ll}
+    if app_name.contains('tm_')
+      va_target += {'va_corrections': files('thread_metric/va_map.json')[0]}
+
+      #error('@0@'.format(target))
+    endif
+
+    zephyr_targets += va_target
     zephyr_only_targets += [target]
     kernel_targets += kernel_ll
 

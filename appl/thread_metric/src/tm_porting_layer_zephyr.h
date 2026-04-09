@@ -72,7 +72,7 @@ static char __aligned(4) test_slab_buffer_3[8 * 128];
                                                                                \
     tid = k_thread_create(&test_thread_##thread_id, test_stack[thread_id],     \
                           TM_TEST_STACK_SIZE, entry_function, NULL, NULL,      \
-                          NULL, priority, 0, K_FOREVER);                       \
+                          NULL, priority, 0, K_NO_WAIT);                       \
                                                                                \
     /* Thread started in sleeping state. Switch to suspended state */          \
                                                                                \

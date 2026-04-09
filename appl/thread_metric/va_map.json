@@ -1,0 +1,34 @@
+[
+    {
+        "key": {"call_path":"Callpath([__ara_fake_entry -> main], [main -> tm_basic_processing_initialize], [tm_basic_processing_initialize -> tm_basic_processing_thread_report], [tm_basic_processing_thread_report -> tm_thread_sleep])","func":"k_sleep","inst":"","nr":0},
+        "value": {"type": "value", "name": "-1"}
+    },
+    {
+        "key": {"call_path":"Callpath([__ara_fake_entry -> main], [main -> tm_cooperative_scheduling_initialize], [tm_cooperative_scheduling_initialize -> tm_cooperative_thread_report], [tm_cooperative_thread_report -> tm_thread_sleep])","func":"k_sleep","inst":"","nr":0},
+        "value": {"type": "value", "name": "-1"}
+    },
+    {
+        "key": {"call_path":"Callpath([__ara_fake_entry -> main], [main -> tm_interrupt_processing_initialize], [tm_interrupt_processing_initialize -> tm_interrupt_thread_report], [tm_interrupt_thread_report -> tm_thread_sleep])","func":"k_sleep","inst":"","nr":0},
+        "value": {"type": "value", "name": "-1"}
+    },
+    {
+        "key": {"call_path":"Callpath([__ara_fake_entry -> main], [main -> tm_interrupt_preemption_processing_initialize], [tm_interrupt_preemption_processing_initialize -> tm_interrupt_preemption_thread_report], [tm_interrupt_preemption_thread_report -> tm_thread_sleep])","func":"k_sleep","inst":"","nr":0},
+        "value": {"type": "value", "name": "-1"}
+    },
+    {
+        "key": {"call_path":"Callpath([__ara_fake_entry -> main], [main -> tm_memory_allocation_initialize], [tm_memory_allocation_initialize -> tm_memory_allocation_thread_report], [tm_memory_allocation_thread_report -> tm_thread_sleep])","func":"k_sleep","inst":"","nr":0},
+        "value": {"type": "value", "name": "-1"}
+    },
+    {
+        "key": {"call_path":"Callpath([__ara_fake_entry -> main], [main -> tm_message_processing_initialize], [tm_message_processing_initialize -> tm_message_processing_thread_report], [tm_message_processing_thread_report -> tm_thread_sleep])","func":"k_sleep","inst":"","nr":0},
+        "value": {"type": "value", "name": "-1"}
+    },
+    {
+        "key": {"call_path":"Callpath([__ara_fake_entry -> main], [main -> tm_preemptive_scheduling_initialize], [tm_preemptive_scheduling_initialize -> tm_preemptive_thread_report], [tm_preemptive_thread_report -> tm_thread_sleep])","func":"k_sleep","inst":"","nr":0},
+        "value": {"type": "value", "name": "-1"}
+    },
+    {
+        "key": {"call_path":"Callpath([__ara_fake_entry -> main], [main -> tm_synchronization_processing_initialize], [tm_synchronization_processing_initialize -> tm_synchronization_processing_thread_report], [tm_synchronization_processing_thread_report -> tm_thread_sleep])","func":"k_sleep","inst":"","nr":0},
+        "value": {"type": "value", "name": "-1"}
+    }
+]
