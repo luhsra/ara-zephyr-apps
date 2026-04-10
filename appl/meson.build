@@ -135,14 +135,14 @@ endif
 #  }]
 #endif
 
-if toolchains.get_variable('riscv_enabled')
-    boards += [{
-    'name': 'xiao_esp32c3',
-    'apps': zephyr_apps,
-    'cflags': cflags,
-    'ldflags': '-fuse-ld=@0@ -L @1@'.format(toolchains.get_variable('riscv_ld').full_path(),toolchains.get_variable('riscv_libgcc_dir') / 'rv32imac' / 'ilp32'),
-  }]
-endif
+# if toolchains.get_variable('riscv_enabled')
+#     boards += [{
+#     'name': 'xiao_esp32c3',
+#     'apps': zephyr_apps,
+#     'cflags': cflags,
+#     'ldflags': '-fuse-ld=@0@ -L @1@'.format(toolchains.get_variable('riscv_ld').full_path(),toolchains.get_variable('riscv_libgcc_dir') / 'rv32imac' / 'ilp32'),
+#   }]
+# endif
 
 gllvm = subproject('gllvm-meson')
 gclang = gllvm.get_variable('gclang')
