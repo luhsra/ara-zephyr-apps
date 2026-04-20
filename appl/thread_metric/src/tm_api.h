@@ -80,7 +80,7 @@ extern "C" {
 //int tm_thread_create(int thread_id, int priority, void (*entry_function)(void *, void *, void *));
 //int tm_thread_resume(int thread_id);
 //int tm_thread_suspend(int thread_id);
-void tm_thread_relinquish(void);
+//void tm_thread_relinquish(void);
 void tm_thread_sleep(int seconds);
 //int tm_queue_create(int queue_id);
 //int tm_queue_send(int queue_id, unsigned long *message_ptr);

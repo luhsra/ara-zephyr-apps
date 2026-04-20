@@ -48,15 +48,6 @@
 
 
 /*
- * This function relinquishes to other ready threads at the same
- * priority.
- */
-void tm_thread_relinquish(void)
-{
-	k_yield();
-}
-
-/*
  * This function suspends the specified thread for the specified number
  * of seconds.
  */

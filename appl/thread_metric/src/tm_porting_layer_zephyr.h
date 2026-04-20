@@ -51,6 +51,15 @@ static char __aligned(4) test_slab_buffer_2[8 * 128];
 static char __aligned(4) test_slab_buffer_3[8 * 128];
 
 /*
+ * This function relinquishes to other ready threads at the same
+ * priority.
+ */
+#define tm_thread_relinquish(void)                                             \
+  do {                                                                         \
+    k_yield();                                                                 \
+  } while (0)
+
+/*
  * This function called from main performs basic RTOS initialization,
  * calls the test initialization function, and then starts the RTOS function.
  */
